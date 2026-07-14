@@ -47,7 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'psapp.apps.PsappConfig',
+    'users.apps.UsersConfig',
+    'properties.apps.PropertiesConfig',
+    'bookings.apps.BookingsConfig',
+    'reviews.apps.ReviewsConfig',
+
     'rest_framework',
     'django_filters'
 ]
