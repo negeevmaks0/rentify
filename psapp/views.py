@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -16,8 +16,15 @@ from .serializers import (
     PropertySerializer,
     PropertyImageSerializer,
     BookingSerializer,
-    ReviewSerializer
+    ReviewSerializer,
+    RegisterSerializer
 )
+
+
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    queryset = User.objects.all()
 
 
 

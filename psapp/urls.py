@@ -6,7 +6,8 @@ from .views import (
     PropertyViewSet,
     PropertyImageViewSet,
     BookingViewSet,
-    ReviewViewSet
+    ReviewViewSet,
+    RegisterView
 )
 
 
@@ -20,6 +21,7 @@ router.register('bookings', BookingViewSet)
 router.register('reviews', ReviewViewSet)
 
 urlpatterns = [
+    path('register/', RegisterView.as_view(), name='register'),
     path('', include(router.urls)),
 ]
 
