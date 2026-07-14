@@ -1,4 +1,5 @@
 from rest_framework import viewsets, generics
+from rest_framework.permissions import IsAuthenticated
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -61,6 +62,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
         'price_per_month',
         'created_at'
     )
+
+    permission_classes = [
+        IsAuthenticated
+    ]
 
 
 
