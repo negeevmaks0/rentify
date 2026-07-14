@@ -51,11 +51,11 @@ class PropertyImageSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
 
-    owner_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        source='owner',
-        write_only=True
-    )
+    # owner_id = serializers.PrimaryKeyRelatedField(
+    #     queryset=User.objects.all(),
+    #     source='owner',
+    #     write_only=True
+    # )
 
     images = PropertyImageSerializer(many=True, read_only=True)
 
@@ -63,20 +63,7 @@ class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
 
-        fields = (
-            'id',
-            'owner',
-            'owner_id',
-            'title',
-            'description',
-            'location',
-            'price_per_month',
-            'room_count',
-            'property_type',
-            'is_active',
-            'created_at',
-            'images'
-        )
+        fields = '__all__'
 
 
 

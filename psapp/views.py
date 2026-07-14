@@ -1,6 +1,8 @@
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 
+from .permissions import IsLandlord
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -63,9 +65,30 @@ class PropertyViewSet(viewsets.ModelViewSet):
         'created_at'
     )
 
-    permission_classes = [
-        IsAuthenticated
-    ]
+    def get_permissions(self):
+        if self.action in [
+            'create',
+            'update',
+            'partial_update',
+            'destroy'
+        ]:
+            permission_classes = [
+                IsLandlord
+            ]
+
+        else:
+            permission_classes = [
+                IsAuthenticated
+            ]
+
+        return [
+            permission()
+            for permission in permission_classes
+        ]
+
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 
