@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTH_USER_MODEL = 'psapp.User'
+AUTH_USER_MODEL = 'users.User'
 
 
 # Application definition
@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'psapp.apps.PsappConfig',
     'users.apps.UsersConfig',
     'properties.apps.PropertiesConfig',
     'bookings.apps.BookingsConfig',

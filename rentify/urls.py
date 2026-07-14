@@ -22,7 +22,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('psapp.urls'))
+    path('api/users/', include('users.urls')),
+    path('api/properties/', include('properties.urls')),
+    path('api/bookings/', include('bookings.urls')),
+    path('api/reviews/', include('reviews.urls')),
 ]
 
 if settings.DEBUG:
