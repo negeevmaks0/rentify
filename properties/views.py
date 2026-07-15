@@ -5,7 +5,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsLandlord
+from .permissions import IsLandlord, IsOwnerOrReadOnly
 
 from rest_framework import viewsets
 
@@ -13,8 +13,35 @@ from rest_framework import viewsets
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.all()
     serializer_class = PropertySerializer
+
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.role == 'landlord':
+            return Property.objects.filter(owner=user)
+
+        return Property.objects.filter(is_active=True)
+
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsLandlord]
+
+        elif self.action in ['update', 'partial_update', 'destroy']:
+            permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+        else:
+            permission_classes = [IsAuthenticated]
+
+
+        return [permission() for permission in permission_classes]
+
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
     filter_backends = (
         DjangoFilterBackend,
@@ -39,31 +66,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         'price_per_month',
         'created_at'
     )
-
-    def get_permissions(self):
-        if self.action in [
-            'create',
-            'update',
-            'partial_update',
-            'destroy'
-        ]:
-            permission_classes = [
-                IsLandlord
-            ]
-
-        else:
-            permission_classes = [
-                IsAuthenticated
-            ]
-
-        return [
-            permission()
-            for permission in permission_classes
-        ]
-
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 
 

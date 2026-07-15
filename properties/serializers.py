@@ -23,3 +23,8 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
 
         fields = '__all__'
+
+        read_only_fields = (
+            'owner',
+            'created_at'
+        )

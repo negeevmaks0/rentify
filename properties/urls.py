@@ -7,7 +7,7 @@ from .views import PropertyViewSet, PropertyImageViewSet
 
 router = DefaultRouter()
 
-router.register('', PropertyViewSet)
+router.register('', PropertyViewSet, basename='property')
 router.register('images', PropertyImageViewSet)
 
 urlpatterns = [
