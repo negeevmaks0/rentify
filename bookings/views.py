@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from properties.permissions import IsLandlord, IsTenant
+from .permissions import IsBookingOwner, IsPropertyOwner
 
 from .models import Booking
 from .serializers import BookingSerializer
@@ -36,15 +37,17 @@ class BookingViewSet(viewsets.ModelViewSet):
 
 
     def get_permissions(self):
-        if self.action in ['approve', 'reject']:
-            permission_classes = [IsLandlord]
-
-        elif self.action in ['create', 'cancel']:
+        if self.action == 'create':
             permission_classes = [IsTenant]
+
+        elif self.action in ['approve', 'reject']:
+            permission_classes = [IsLandlord, IsPropertyOwner]
+
+        elif self.action == 'cancel':
+            permission_classes = [IsTenant, IsBookingOwner]
 
         else:
             permission_classes = [IsTenant | IsLandlord]
-
 
         return [permission() for permission in permission_classes]
 
@@ -59,7 +62,6 @@ class BookingViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN
             )
 
-
         booking.status = 'approved'
         booking.save()
 
@@ -71,10 +73,13 @@ class BookingViewSet(viewsets.ModelViewSet):
     def reject(self, request, pk=None):
         booking = self.get_object()
 
-        if booking.property.owner != request.user:
+        if booking.status != 'pending':
             return Response(
-                {"detail": "You are not the owner of this property"},
-                status=status.HTTP_403_FORBIDDEN
+                {
+                    "detail":
+                    "Only pending bookings can be approved."
+                },
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         booking.status = 'rejected'

@@ -22,10 +22,16 @@ class IsBookingTenant(BasePermission):
 
 
 
-class IsPropertyOwnerForBooking(BasePermission):
+class IsPropertyOwner(BasePermission):
     """
     Владелец недвижимости
     """
 
     def has_object_permission(self, request, view, obj):
         return obj.property.owner == request.user
+
+
+
+class IsBookingOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.tenant == request.user
