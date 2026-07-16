@@ -1,6 +1,17 @@
 from rest_framework.permissions import BasePermission
 
 
+
+class IsTenant(BasePermission):
+    """
+    Только арендаторы
+    """
+
+    def has_permission(self, request, view):
+        return (request.user.is_authenticated and request.user.role == 'tenant')
+
+
+
 class IsBookingTenant(BasePermission):
     """
     Только пользователь, создавший бронь
@@ -11,7 +22,7 @@ class IsBookingTenant(BasePermission):
 
 
 
-class IsPropertyOwner(BasePermission):
+class IsPropertyOwnerForBooking(BasePermission):
     """
     Владелец недвижимости
     """

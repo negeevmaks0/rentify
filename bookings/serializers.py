@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from .models import Booking
+from properties.models import Property
 
 from datetime import timedelta
 from django.utils import timezone
@@ -15,7 +17,6 @@ class BookingSerializer(serializers.ModelSerializer):
 
     tenant = serializers.PrimaryKeyRelatedField(read_only=True)
     cancellation_deadline = serializers.DateField(read_only=True)
-
     status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
@@ -33,9 +34,16 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
     def validate(self, data):
+        request = self.context['request']
         start_date = data['start_date']
         end_date = data['end_date']
         property = data['property']
+
+        if property.owner == request.user:
+            raise serializers.ValidationError('You cannot book your own property.')
+
+        if not property.is_active:
+            raise serializers.ValidationError('This property is not available.')
 
         today = timezone.now().date()
 
@@ -72,4 +80,12 @@ class BookingSerializer(serializers.ModelSerializer):
             'cancellation_deadline',
             'status',
             'booking_price'
+        )
+
+        read_only_fields = (
+            'tenant',
+            'booking_date',
+            'cancellation_deadline',
+            'booking_price',
+            'status'
         )
