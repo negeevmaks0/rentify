@@ -6,7 +6,7 @@ from bookings.models import Booking
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = serializers.StringRelatedField(read_only=True)
 
     booking = serializers.PrimaryKeyRelatedField(queryset=Booking.objects.all())
 

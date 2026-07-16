@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Review
 from .serializers import ReviewSerializer
 
@@ -9,14 +11,14 @@ from properties.permissions import IsTenant
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['booking']
 
-    def perform_create(self, serializer):
-        serializer.save(
-            author=self.request.user
-        )
+
+    def get_queryset(self):
+        return Review.objects.select_related('booking', 'author')
 
 
     def get_permissions(self):
