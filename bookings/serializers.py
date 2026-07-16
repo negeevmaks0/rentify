@@ -16,6 +16,8 @@ class BookingSerializer(serializers.ModelSerializer):
     tenant = serializers.PrimaryKeyRelatedField(read_only=True)
     cancellation_deadline = serializers.DateField(read_only=True)
 
+    status = serializers.CharField(read_only=True)
+
     def create(self, validated_data):
         request = self.context['request']
 
