@@ -5,7 +5,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .permissions import IsLandlord, IsOwnerOrReadOnly
+from .permissions import IsLandlord, IsOwnerOrReadOnly, IsPropertyOwner
 
 from rest_framework import viewsets
 
@@ -67,5 +67,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
 
 class PropertyImageViewSet(viewsets.ModelViewSet):
-    queryset = PropertyImage.objects.all()
     serializer_class = PropertyImageSerializer
+
+
+    def get_queryset(self):
+        return PropertyImage.objects.all()
+
+
+    def get_permissions(self):
+        if self.action in ['create', 'destroy', 'update', 'partial_update']:
+            permission_classes = [IsAuthenticated, IsPropertyOwner]
+
+        else:
+            permission_classes = [AllowAny]
+
+        return [permission() for permission in permission_classes]

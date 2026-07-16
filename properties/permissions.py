@@ -37,3 +37,13 @@ class IsOwnerOrReadOnly(BasePermission):
             return True
 
         return obj.owner == request.user
+
+
+
+class IsPropertyOwner(BasePermission):
+    """
+    Проверка владельца объявления через изображение
+    """
+
+    def has_object_permission(self, request, view, obj):
+        return obj.property.owner == request.user

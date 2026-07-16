@@ -9,7 +9,20 @@ class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
 
-        fields = '__all__'
+        fields = (
+            'id',
+            'property',
+            'image'
+        )
+
+
+    def validate_property(self, value):
+        request = self.context['request']
+
+        if value.owner != request.user:
+            raise serializers.ValidationError('Youcan upload images only to your own properties.')
+
+        return value
 
 
 
