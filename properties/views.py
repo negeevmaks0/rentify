@@ -4,23 +4,27 @@ from .models import Property, PropertyImage
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .permissions import IsLandlord, IsOwnerOrReadOnly
 
 from rest_framework import viewsets
+
+from .filters import PropertyFilter
 
 # Create your views here.
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
+    filterset_class = PropertyFilter
 
 
     def get_queryset(self):
         user = self.request.user
 
-        if user.role == 'landlord':
-            return Property.objects.filter(owner=user)
+        if user.is_authenticated:
+            if user.role == 'landlord':
+                return Property.objects.filter(owner=user)
 
         return Property.objects.filter(is_active=True)
 
@@ -33,7 +37,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
         else:
-            permission_classes = [IsAuthenticated]
+            permission_classes = [AllowAny]
 
 
         return [permission() for permission in permission_classes]
@@ -53,13 +57,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         'title',
         'description',
         'location'
-    )
-
-    filterset_fields = (
-        'property_type',
-        'location',
-        'room_count',
-        'price_per_month'
     )
 
     ordering_fields = (
