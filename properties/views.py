@@ -8,15 +8,26 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .permissions import IsLandlord, IsOwnerOrReadOnly, IsPropertyOwner
 
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .filters import PropertyFilter
 
 # Create your views here.
 
-
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
     filterset_class = PropertyFilter
+
+
+    @action(detail=True, methods=['patch'])
+    def toggle_active(self, request, pk=None):
+        property = self.get_object()
+
+        property.is_active = not property.is_active
+        property.save()
+
+        return Response({'is_active': property.is_active})
 
 
     def get_queryset(self):
