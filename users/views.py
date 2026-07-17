@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 
+from django.views.generic import TemplateView
+
 # Create your views here.
 
 
@@ -34,6 +36,12 @@ def set_token_cookies(response, user):
     )
 
     return response
+
+
+
+class LoginPageView(TemplateView):
+    template_name = 'users/login.html'
+
 
 
 
