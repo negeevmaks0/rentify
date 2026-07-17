@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -8,6 +10,8 @@ from .serializers import ReviewSerializer
 
 from users.permissions import IsReviewAuthorOrReadOnly
 from properties.permissions import IsTenant
+
+from properties.models import Property
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -32,3 +36,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes]
+
+
+    @action(detail=False, methods=['get'])
+    def property_reviews(self, request):
+        property_id = request.query_params.get('property')
+
+        reviews = Review.objects.filter(booking__property_id=property_id)
+
+        serializer = self.get_serializer(reviews, many=True)
+
+        return Response(serializer.data)
