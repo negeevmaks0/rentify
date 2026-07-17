@@ -117,3 +117,12 @@ class BookingViewSet(viewsets.ModelViewSet):
             {"status": "Booking cancelled."},
             status=status.HTTP_200_OK
         )
+
+
+    @action(detail=False, methods=['get'])
+    def history(self, request):
+        bookings = self.get_queryset().filter(end_date__lt=timezone.now().date())
+
+        serializer = self.get_serializer(bookings, many=True)
+
+        return Response(serializer.data)
