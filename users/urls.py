@@ -11,7 +11,6 @@ from rest_framework_simplejwt.views import (
 
 
 urlpatterns = [
-    path('page/login/', LoginPageView.as_view(), name='login-page'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('register/', RegisterView.as_view(), name='register'),
 

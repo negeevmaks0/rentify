@@ -38,9 +38,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        return settings.AUTH_USER_MODEL.objects.create_user(**validated_data)
+        return User.objects.create_user(**validated_data)
 
 
 
 class LoginSerializer(TokenObtainPairSerializer):
     username_field = 'email'
+
+    def validate(self, attrs):
+        attrs['username'] = attrs.get('email')
+
+        return super().validate(attrs)
