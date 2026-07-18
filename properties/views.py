@@ -15,6 +15,8 @@ from django.views.generic import TemplateView
 
 from .filters import PropertyFilter
 
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 
 # Create your views here.
@@ -33,6 +35,40 @@ class PropertyListPageView(TemplateView):
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
     filterset_class = PropertyFilter
+
+
+    @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    def upload_image(self, request, pk=None):
+        property = self.get_object()
+
+        if property.owner != request.user:
+            return Response(
+                {"detail": "You can upload images only to your own properties."},
+                status=403
+            )
+
+        images = request.FILES.getlist('images')
+
+        if not images:
+            return Response(
+                {"detail": "No images uploaded."},
+                status=400
+            )
+
+        created = []
+
+        for image in images:
+            obj = PropertyImage.objects.create(property=property, image=image)
+
+            created.append(
+                PropertyImageSerializer(
+                    obj,
+                    context={"request":request}
+                ).data
+            )
+
+
+        return Response(created)
 
 
     @action(detail=True, methods=['patch'])
