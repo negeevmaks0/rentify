@@ -20,6 +20,11 @@ from .filters import PropertyFilter
 # Create your views here.
 
 
+class PropertyCreatePageView(TemplateView):
+    template_name = 'properties/create.html'
+
+
+
 class PropertyListPageView(TemplateView):
     template_name = 'properties/list.html'
 

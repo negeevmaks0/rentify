@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Create property
+{% endblock %}
+
+
+{% block content %}
+
+
+<h2>
+Create property
+</h2>
+
+
+<form id="propertyForm">
+
+
+    <input 
+        class="form-control mb-3"
+        id="title"
+        placeholder="Title"
+        required>
+
+
+    <textarea
+        class="form-control mb-3"
+        id="description"
+        placeholder="Description">
+    </textarea>
+
+
+    <input
+        class="form-control mb-3"
+        id="location"
+        placeholder="Location"
+        required>
+
+
+    <input
+        class="form-control mb-3"
+        id="price"
+        type="number"
+        placeholder="Price"
+        required>
+
+
+    <input
+        class="form-control mb-3"
+        id="rooms"
+        type="number"
+        placeholder="Rooms"
+        required>
+
+
+    <select
+        class="form-select mb-3"
+        id="type">
+
+
+        <option value="apartment">
+            Apartment
+        </option>
+
+        <option value="house">
+            House
+        </option>
+
+        <option value="studio">
+            Studio
+        </option>
+
+
+    </select>
+
+
+    <button class="btn btn-primary">
+        Create
+    </button>
+
+
+</form>
+
+
+<div id="error"
+    class="text-danger mt-3">
+</div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script src="/static/js/property_create.js"></script>
+
+{% endblock %}
