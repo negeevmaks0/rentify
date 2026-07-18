@@ -31,6 +31,8 @@ class PropertySerializer(serializers.ModelSerializer):
 
     images = PropertyImageSerializer(many=True, read_only=True)
 
+    main_image = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Property
@@ -50,13 +52,13 @@ class PropertySerializer(serializers.ModelSerializer):
             'main_image'
         )
 
-        def get_main_image(self, obj):
-            image = obj.images.first()
+    def get_main_image(self, obj):
+        image = obj.images.first()
 
-            if image:
-                return image.image.url
+        if image:
+            return image.image.url
 
-            return None
+        return None
 
         read_only_fields = (
             'owner',

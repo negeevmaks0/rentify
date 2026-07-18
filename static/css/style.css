@@ -42,3 +42,29 @@ a{
 .table{
     color:white;
 }
+
+.property-card{
+
+    background:#071a33;
+    color:white;
+    border:none;
+    border-radius:15px;
+    overflow:hidden;
+
+}
+
+
+.property-image{
+
+    height:220px;
+    object-fit:cover;
+
+}
+
+
+.property-card:hover{
+
+    transform:translateY(-5px);
+    transition:0.3s;
+
+}

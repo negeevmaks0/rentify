@@ -26,8 +26,12 @@ async function checkUser(){
 
 }
 
-
 async function loadProperties(){
+
+    const container = document.getElementById("properties");
+
+    container.innerHTML = "";
+
 
     const response = await fetch(
         "/api/properties/",
@@ -37,45 +41,96 @@ async function loadProperties(){
     );
 
 
-    const data = await response.json();
+    const properties = await response.json();
 
 
-    const container =
-        document.getElementById("properties");
+
+    properties.forEach(property => {
 
 
-    data.forEach(property => {
+        const image = property.main_image
+            ?
+            property.main_image
+            :
+            "/static/images/no-image.jpg";
+
 
 
         container.innerHTML += `
 
+
         <div class="col-md-4">
 
-            <div class="card p-3">
 
-                <h5>
-                    ${property.title}
-                </h5>
+            <div class="card property-card h-100">
 
 
-                <p>
-                    ${property.description}
-                </p>
+                <img 
+                    src="${image}"
+                    class="card-img-top property-image"
+                    alt="${property.title}"
+                >
 
 
-                <p>
-                    ${property.location}
-                </p>
+
+                <div class="card-body">
 
 
-                <strong>
-                    ${property.price_per_month} €
-                </strong>
+                    <h5 class="card-title">
+                        ${property.title}
+                    </h5>
+
+
+
+                    <p class="text-muted">
+                        ${property.location}
+                    </p>
+
+
+
+                    <p>
+                        ${property.description}
+                    </p>
+
+
+
+                    <p>
+                        Rooms:
+                        ${property.room_count}
+                    </p>
+
+
+
+                    <p>
+                        Type:
+                        ${property.property_type}
+                    </p>
+
+
+
+                    <h5>
+                        ${property.price_per_month} €
+                        <small>
+                            / month
+                        </small>
+                    </h5>
+
+
+
+                    <button 
+                        class="btn btn-primary w-100">
+                        View details
+                    </button>
+
+
+                </div>
 
 
             </div>
 
+
         </div>
+
 
         `;
 
@@ -84,6 +139,7 @@ async function loadProperties(){
 
 
 }
+
 
 checkUser();
 loadProperties();
