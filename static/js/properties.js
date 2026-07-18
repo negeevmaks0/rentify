@@ -118,7 +118,8 @@ async function loadProperties(){
 
 
                     <button 
-                        class="btn btn-primary w-100">
+                        class="btn btn-primary w-100 view-details"
+                        data-id="${property.id}">
                         View details
                     </button>
 
@@ -137,6 +138,158 @@ async function loadProperties(){
 
     });
 
+    document
+    .querySelectorAll(".view-details")
+    .forEach(button => {
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+
+                const id = button.dataset.id;
+
+
+                const property =
+                properties.find(
+                    p => p.id == id
+                );
+
+
+                openPropertyModal(property);
+
+
+            }
+        );
+
+
+    });
+
+
+}
+
+function openPropertyModal(property){
+
+
+const modal =
+document.getElementById("propertyModal");
+
+
+const content =
+document.getElementById("modalContent");
+
+
+
+content.innerHTML = `
+
+<h2>
+${property.title}
+</h2>
+
+
+${
+property.images.length
+
+?
+
+`
+<div class="row g-2">
+
+${property.images.map(
+img =>
+
+`
+<div class="col-4">
+
+<img 
+src="${img.image}"
+class="img-fluid rounded">
+
+</div>
+
+`
+
+).join("")}
+
+</div>
+`
+
+:
+
+`
+<img 
+src="/static/images/no-image.jpg"
+class="img-fluid rounded mb-3">
+`
+
+}
+
+
+
+<p>
+${property.description}
+</p>
+
+
+<p>
+Location:
+${property.location}
+</p>
+
+
+<p>
+Rooms:
+${property.room_count}
+</p>
+
+
+<h3>
+${property.price_per_month} €
+</h3>
+
+
+<button 
+class="btn btn-success"
+onclick="goBooking(${property.id})">
+
+Booking
+
+</button>
+
+
+`;
+
+
+
+modal.style.display="flex";
+
+
+}
+
+
+
+function closePropertyModal(){
+
+document.getElementById(
+"propertyModal"
+).style.display="none";
+
+}
+
+
+
+document
+.getElementById("closeModal")
+.onclick =
+closePropertyModal;
+
+
+
+function goBooking(id){
+
+window.location =
+`/bookings/create/${id}/`;
 
 }
 
