@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
 Login
 {% endblock %}
@@ -72,6 +74,6 @@ Login
 
 {% block scripts %}
 
-<script src="/static/js/auth.js"></script>
+<script src="{% static 'js/login.js' %}"></script>
 
 {% endblock %}

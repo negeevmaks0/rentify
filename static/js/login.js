@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("registerForm");
+    const form = document.getElementById("loginForm");
 
     if (!form) {
         return;
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         const response = await fetch(
-            "/api/users/register/",
+            "/api/users/login/",
             {
                 method: "POST",
 
@@ -22,18 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
 
                 body: JSON.stringify({
-
-                    username: document.getElementById("username").value,
-
-                    first_name: document.getElementById("first_name").value,
-
-                    last_name: document.getElementById("last_name").value,
-
-                    email: document.getElementById("email").value,
-
-                    password: document.getElementById("password").value,
-
-                    role: document.getElementById("role").value
+                    username: document.getElementById("email").value,
+                    password: document.getElementById("password").value
                 })
             }
         );
@@ -47,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             document.getElementById("error").innerText =
-                JSON.stringify(data);
+                data.detail || "Wrong username or password.";
         }
 
     });

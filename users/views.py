@@ -79,8 +79,14 @@ class ProfileView(RetrieveUpdateAPIView):
 
 
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+
     def post(self, request):
-        response = Response({"detail": "Logged out"})
+        response = Response(
+            {"detail": "Logged out"},
+            status=status.HTTP_200_OK
+        )
 
         response.delete_cookie("access_token")
         response.delete_cookie("refresh_token")

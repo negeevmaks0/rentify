@@ -1,51 +1,74 @@
-document
-.getElementById("loginForm")
-.addEventListener("submit", async function(e){
 
-    e.preventDefault();
+async function checkAuth() {
+
+    const navbar = document.getElementById("navbar");
+
+    if (!navbar) {
+        return;
+    }
 
     const response = await fetch(
-        "/api/users/login/",
+        "/api/users/profile/",
         {
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-                username:
-                    document.getElementById("email").value,
-
-                password:
-                    document.getElementById("password").value
-
-            })
+            credentials: "include"
         }
     );
 
-    const data = await response.json();
+    if (response.ok) {
 
+        const user = await response.json();
 
-    if(response.ok){
+        navbar.innerHTML = `
+            <a href="/" class="nav-link">Home</a>
 
-        document.cookie = 
-            `access=${data.access}; path=/; max-age=3600`;
+            <a href="/profile/" class="nav-link">
+                ${user.username}
+            </a>
 
-        document.cookie =
-            `refresh=${data.refresh}; path=/; max-age=604800`;
+            <button
+                id="logoutBtn"
+                class="btn btn-outline-light ms-2">
+                Logout
+            </button>
+        `;
 
+        document
+            .getElementById("logoutBtn")
+            .addEventListener("click", logout);
 
-        window.location="/";
+    } else {
 
+        navbar.innerHTML = `
+            <a href="/login/" class="nav-link">
+                Login
+            </a>
+
+            <a href="/register/" class="nav-link">
+                Register
+            </a>
+        `;
     }
+}
 
-    else{
 
-        document.getElementById("error").innerText =
-            data.detail || "Wrong email or password.";
+async function logout() {
 
-    }
+    await fetch(
+        "/api/users/logout/",
+        {
+            method: "POST",
+            credentials: "include",
+            headers:{
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        }
+    );
 
-});
+    window.location = "/";
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    checkAuth
+);
