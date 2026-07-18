@@ -35,7 +35,28 @@ class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
 
-        fields = '__all__'
+        fields = (
+            'id',
+            'owner',
+            'title',
+            'description',
+            'location',
+            'price_per_month',
+            'room_count',
+            'property_type',
+            'is_active',
+            'created_at',
+            'images',
+            'main_image'
+        )
+
+        def get_main_image(self, obj):
+            image = obj.images.first()
+
+            if image:
+                return image.image.url
+
+            return None
 
         read_only_fields = (
             'owner',
