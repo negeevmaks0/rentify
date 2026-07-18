@@ -1,15 +1,6 @@
-from rest_framework.routers import DefaultRouter
-from django.urls import path, include
-
-from .views import PropertyViewSet, PropertyImageViewSet
-
-
-
-router = DefaultRouter()
-
-router.register('', PropertyViewSet, basename='property')
-router.register('images', PropertyImageViewSet, basename='property-image')
+from django.urls import path
+from .views import PropertyListPageView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', PropertyListPageView.as_view(), name='properties-page'),
 ]

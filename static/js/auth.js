@@ -1,4 +1,3 @@
-
 async function checkAuth() {
 
     const navbar = document.getElementById("navbar");
@@ -7,65 +6,102 @@ async function checkAuth() {
         return;
     }
 
-    const response = await fetch(
-        "/api/users/profile/",
-        {
-            credentials: "include"
+
+    try {
+
+        const response = await fetch(
+            "/api/users/profile/",
+            {
+                credentials: "include"
+            }
+        );
+
+
+        if (response.ok) {
+
+            const user = await response.json();
+
+
+            navbar.innerHTML = `
+
+                <a href="/" class="nav-link">
+                    Home
+                </a>
+
+                <a href="/properties/" class="nav-link">
+                    Properties
+                </a>
+
+                <a href="/bookings/" class="nav-link">
+                    My bookings
+                </a>
+
+                <a href="/profile/" class="nav-link">
+                    ${user.username}
+                </a>
+
+                <button
+                    id="logoutBtn"
+                    class="btn btn-outline-light ms-2">
+                    Logout
+                </button>
+
+            `;
+
+
+            document
+                .getElementById("logoutBtn")
+                .addEventListener(
+                    "click",
+                    logout
+                );
+
+
+        } else {
+
+
+            navbar.innerHTML = `
+
+                <a href="/login/" class="nav-link">
+                    Login
+                </a>
+
+                <a href="/register/" class="nav-link">
+                    Register
+                </a>
+
+            `;
+
+
         }
-    );
 
-    if (response.ok) {
 
-        const user = await response.json();
+    } catch(error) {
 
-        navbar.innerHTML = `
-            <a href="/" class="nav-link">Home</a>
+        console.log(error);
 
-            <a href="/profile/" class="nav-link">
-                ${user.username}
-            </a>
-
-            <button
-                id="logoutBtn"
-                class="btn btn-outline-light ms-2">
-                Logout
-            </button>
-        `;
-
-        document
-            .getElementById("logoutBtn")
-            .addEventListener("click", logout);
-
-    } else {
-
-        navbar.innerHTML = `
-            <a href="/login/" class="nav-link">
-                Login
-            </a>
-
-            <a href="/register/" class="nav-link">
-                Register
-            </a>
-        `;
     }
+
 }
 
 
-async function logout() {
+
+async function logout(){
+
 
     await fetch(
         "/api/users/logout/",
         {
-            method: "POST",
-            credentials: "include",
-            headers:{
-                "X-CSRFToken": getCookie("csrftoken")
-            }
+            method:"POST",
+            credentials:"include",
         }
     );
 
-    window.location = "/";
+
+    window.location="/login/";
+
 }
+
 
 
 document.addEventListener(

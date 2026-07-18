@@ -26,10 +26,11 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('login/', TemplateView.as_view(template_name='users/login.html'), name='login-page'),
     path('register/', TemplateView.as_view(template_name='users/register.html'), name='register-page'),
+    path('properties/', include('properties.urls')),
 
     path('admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
-    path('api/properties/', include('properties.urls')),
+    path('api/properties/', include('properties.api_urls')),
     path('api/bookings/', include('bookings.urls')),
     path('api/reviews/', include('reviews.urls')),
 ]

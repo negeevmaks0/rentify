@@ -11,9 +11,19 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from django.views.generic import TemplateView
+
 from .filters import PropertyFilter
 
+
+
 # Create your views here.
+
+
+class PropertyListPageView(TemplateView):
+    template_name = 'properties/list.html'
+
+
 
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
