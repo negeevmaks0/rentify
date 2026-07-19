@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Booking
+{% endblock %}
+
+{% block content %}
+
+<h2>
+Booking
+</h2>
+
+<p id="propertyId">
+Property:
+{{ property_id }}
+</p>
+
+<div id="propertyContainer">
+
+Loading...
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/js/booking.js"></script>
+
+{% endblock %}

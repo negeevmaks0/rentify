@@ -10,8 +10,18 @@ from .models import Booking
 from .serializers import BookingSerializer
 
 from django.utils import timezone
+from django.shortcuts import render
 
 # Create your views here.
+
+def booking_create_page(request, property_id):
+    return render(
+        request,
+        "bookings/create.html",
+        {"property_id": property_id}
+    )
+
+
 
 class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer
