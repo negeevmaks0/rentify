@@ -32,7 +32,7 @@ const response = await fetch(
         location:
             document.getElementById("location").value,
 
-        price_per_month:
+        price_per_night:
             document.getElementById("price").value,
 
         room_count:

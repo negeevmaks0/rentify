@@ -9,7 +9,6 @@ class PropertyAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'owner',
-        'price_per_month',
         'property_type',
         'room_count',
         'is_active',

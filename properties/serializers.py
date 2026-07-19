@@ -43,7 +43,7 @@ class PropertySerializer(serializers.ModelSerializer):
             'title',
             'description',
             'location',
-            'price_per_month',
+            'price_per_night',
             'room_count',
             'property_type',
             'is_active',

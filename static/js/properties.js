@@ -109,9 +109,9 @@ async function loadProperties(){
 
 
                     <h5>
-                        ${property.price_per_month} €
+                        ${property.price_per_night} €
                         <small>
-                            / month
+                            / night
                         </small>
                     </h5>
 
@@ -245,7 +245,7 @@ ${property.room_count}
 
 
 <h3>
-${property.price_per_month} €
+${property.price_per_night} € / night
 </h3>
 
 

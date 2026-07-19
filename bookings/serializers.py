@@ -25,9 +25,17 @@ class BookingSerializer(serializers.ModelSerializer):
         property = validated_data['property']
         start_date = validated_data['start_date']
 
+        nights = (validated_data['end_date'] - start_date).days
+
+        deadline = start_date - timedelta(days=2)
+
+        if deadline < timezone.now().date():
+            deadline = timezone.now().date()
+
+        
         validated_data['tenant'] = request.user
-        validated_data['booking_price'] = property.price_per_month
-        validated_data['cancellation_deadline'] = (start_date - timedelta(days=2))
+        validated_data['booking_price'] = property.price_per_night * nights
+        validated_data['cancellation_deadline'] = deadline
 
         return Booking.objects.create(**validated_data)
 
@@ -52,6 +60,9 @@ class BookingSerializer(serializers.ModelSerializer):
 
         if start_date > end_date:
             raise serializers.ValidationError("End date must be after start date.")
+
+        if start_date == end_date:
+            raise serializers.ValidationError("Booking must be at least one night.")
 
         exists = Booking.objects.filter(
             property=property,

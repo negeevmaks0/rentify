@@ -29,12 +29,14 @@ class Property(models.Model):
     description = models.TextField()
 
     location = models.CharField(max_length=200)
-    price_per_month = models.DecimalField(
+
+    price_per_night = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         validators=[
-            MinValueValidator(0.01)
-        ]
+            MinValueValidator(0)
+        ],
+        default=0
     )
 
     room_count = models.PositiveIntegerField()
@@ -50,7 +52,7 @@ class Property(models.Model):
 
 
     def __str__(self):
-        return f'{self.title}: {self.price_per_month}'
+        return f'{self.title}: {self.price_per_night}/night'
 
 
     class Meta:

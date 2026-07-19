@@ -123,6 +123,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     ordering_fields = (
         'price_per_month',
+        'price_per_night',
         'created_at'
     )
 

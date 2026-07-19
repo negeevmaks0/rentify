@@ -66,6 +66,14 @@ class BookingViewSet(viewsets.ModelViewSet):
     def approve(self, request, pk=None):
         booking = self.get_object()
 
+        if booking.status != 'pending':
+            return Response(
+                {
+                    "detail": "Only pending bookings can be approved."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         if booking.property.owner != request.user:
             return Response(
                 {"detail": "You are not the owner of this property"},
@@ -87,7 +95,7 @@ class BookingViewSet(viewsets.ModelViewSet):
             return Response(
                 {
                     "detail":
-                    "Only pending bookings can be approved."
+                    "Only pending bookings can be rejected."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
