@@ -1,4 +1,4 @@
-async function loadBookings(){
+async function loadBookings(filter=""){
 
 
 const container =
@@ -7,7 +7,7 @@ document.getElementById("bookings");
 
 const response =
 await fetch(
-    "/api/bookings/",
+    `/api/bookings/?filter=${filter}`,
     {
         credentials:"include"
     }
@@ -226,3 +226,16 @@ else{
 
 
 loadBookings();
+
+document
+.querySelectorAll(".filter-btn")
+.forEach(btn=>{
+
+    btn.addEventListener(
+        "click",
+        ()=>loadBookings(
+            btn.dataset.filter
+        )
+    );
+
+});

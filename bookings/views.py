@@ -39,9 +39,36 @@ class BookingViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         if user.role == 'tenant':
-            return Booking.objects.filter(
+            queryset = Booking.objects.filter(
                 tenant=user
             )
+
+            booking_filter = self.request.query_params.get("filter")
+
+
+            if booking_filter == "active":
+                queryset = queryset.filter(
+                    end_date__gte=timezone.now().date(),
+                    status__in=[
+                        "pending",
+                        "approved"
+                    ]
+                )
+
+
+            elif booking_filter == "completed":
+                queryset = queryset.filter(
+                    end_date__lt=timezone.now().date()
+                )
+
+
+            elif booking_filter == "cancelled":
+                queryset = queryset.filter(
+                    status="cancelled"
+                )
+
+
+            return queryset
 
 
         if user.role == 'landlord':
