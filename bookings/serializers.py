@@ -16,20 +16,35 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
-    tenant = serializers.PrimaryKeyRelatedField(read_only=True)
-    cancellation_deadline = serializers.DateField(read_only=True)
-    status = serializers.CharField(read_only=True)
+    tenant = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+
+    cancellation_deadline = serializers.DateField(
+        read_only=True
+    )
+
+    status = serializers.CharField(
+        read_only=True
+    )
 
     property_detail = PropertySerializer(
         source="property",
         read_only=True
     )
 
+    nights = serializers.SerializerMethodField()
+
+
+    def get_nights(self, obj):
+        return (obj.end_date - obj.start_date).days
+
+
     def create(self, validated_data):
         request = self.context['request']
 
         property = validated_data['property']
-        
+
         start_date = validated_data['start_date']
         nights = (validated_data['end_date'] - start_date).days
 
@@ -94,6 +109,7 @@ class BookingSerializer(serializers.ModelSerializer):
             'tenant',
             'start_date',
             'end_date',
+            'nights',
             'booking_date',
             'cancellation_deadline',
             'status',
