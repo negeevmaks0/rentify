@@ -14,19 +14,33 @@ async function checkAuth() {
         if (response.ok) {
             const user = await response.json();
 
-            navbar.innerHTML = `
+            let links = `
                 <a href="/" class="nav-link">
                     Home
                 </a>
+            `;
 
-                <a href="/properties/" class="nav-link">
-                    Properties
-                </a>
+            if(user.role === "tenant"){
+                links += `
+                    <a href="/properties/" class="nav-link">
+                        Properties
+                    </a>
 
-                <a href="/bookings/" class="nav-link">
-                    My bookings
-                </a>
+                    <a href="/bookings/" class="nav-link">
+                        My bookings
+                    </a>
+                `;
+            }
 
+            if(user.role === "landlord"){
+                links += `
+                    <a href="/properties/cabinet/" class="nav-link">
+                        My Cabinet
+                    </a>
+                `;
+            }
+
+            links += `
                 <a href="/profile/" class="nav-link">
                     ${user.username}
                 </a>
@@ -37,6 +51,8 @@ async function checkAuth() {
                     Logout
                 </button>
             `;
+
+            navbar.innerHTML = links;
 
             document
                 .getElementById("logoutBtn")
