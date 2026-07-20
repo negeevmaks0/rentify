@@ -1,5 +1,26 @@
 console.log("Booking page");
 
+function getCookie(name) {
+    let cookieValue = null;
+
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+
+    return cookieValue;
+}
+
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -229,6 +250,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         bookingBtn.addEventListener(
         "click",
         async ()=>{
+            bookingBtn.disabled = true;
+            bookingBtn.innerText = "Creating booking...";
 
             const response =
             await fetch(
@@ -240,7 +263,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 credentials:"include",
 
                 headers:{
-                    "Content-Type":"application/json"
+                    "Content-Type":"application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
                 },
 
                 body:JSON.stringify({
@@ -264,14 +288,40 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
 
             }
+            else {
+
+                bookingBtn.disabled = false;
+                bookingBtn.innerText = "Book property";
+
+            }
 
             const data =
                 await response.json();
 
-            document
-            .getElementById("bookingError")
-            .innerText =
-            JSON.stringify(data);
+            const errorBox =
+            document.getElementById("bookingError");
+
+            if(data.non_field_errors){
+
+                errorBox.innerText =
+                data.non_field_errors[0];
+
+            }
+            else if(data.detail){
+
+                errorBox.innerText =
+                data.detail;
+
+            }
+            else{
+
+                errorBox.innerText =
+                "Booking error";
+
+            }
+
+            bookingBtn.disabled = false;
+            bookingBtn.innerText = "Book property";
 
         });
 
