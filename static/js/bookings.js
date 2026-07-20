@@ -288,12 +288,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
 
             }
-            else {
-
-                bookingBtn.disabled = false;
-                bookingBtn.innerText = "Book property";
-
-            }
 
             const data =
                 await response.json();
