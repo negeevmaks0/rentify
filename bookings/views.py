@@ -72,9 +72,32 @@ class BookingViewSet(viewsets.ModelViewSet):
 
 
         if user.role == 'landlord':
-            return Booking.objects.filter(
+            queryset = Booking.objects.filter(
                 property__owner=user
             )
+
+            booking_filter = self.request.query_params.get("filter")
+
+
+            if booking_filter == "pending":
+                queryset = queryset.filter(
+                    status="pending"
+                )
+
+
+            elif booking_filter == "approved":
+                queryset = queryset.filter(
+                    status="approved"
+                )
+
+
+            elif booking_filter == "rejected":
+                queryset = queryset.filter(
+                    status="rejected"
+                )
+
+
+            return queryset
 
 
         return Booking.objects.none()
