@@ -1,6 +1,5 @@
 async function loadLandlord(){
 
-
 const response = await fetch(
 "/api/properties/my/",
 {
@@ -8,9 +7,7 @@ credentials:"include"
 }
 );
 
-
 const properties = await response.json();
-
 
 document.getElementById("properties").innerHTML =
 properties.map(p=>`
@@ -34,7 +31,6 @@ ${p.location}
 `).join("");
 
 
-
 const bookingsResponse = await fetch(
 "/api/bookings/landlord/",
 {
@@ -42,9 +38,7 @@ credentials:"include"
 }
 );
 
-
 const bookings = await bookingsResponse.json();
-
 
 document.getElementById("requests").innerHTML =
 bookings.map(b=>`

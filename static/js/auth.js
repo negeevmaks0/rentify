@@ -1,29 +1,20 @@
 async function checkAuth() {
-
     const navbar = document.getElementById("navbar");
 
     if (!navbar) {
         return;
     }
 
-
     try {
-
         const response = await fetch(
             "/api/users/profile/",
-            {
-                credentials: "include"
-            }
+            {credentials: "include"}
         );
 
-
         if (response.ok) {
-
             const user = await response.json();
 
-
             navbar.innerHTML = `
-
                 <a href="/" class="nav-link">
                     Home
                 </a>
@@ -45,9 +36,7 @@ async function checkAuth() {
                     class="btn btn-outline-light ms-2">
                     Logout
                 </button>
-
             `;
-
 
             document
                 .getElementById("logoutBtn")
@@ -56,12 +45,8 @@ async function checkAuth() {
                     logout
                 );
 
-
         } else {
-
-
             navbar.innerHTML = `
-
                 <a href="/login/" class="nav-link">
                     Login
                 </a>
@@ -69,26 +54,15 @@ async function checkAuth() {
                 <a href="/register/" class="nav-link">
                     Register
                 </a>
-
             `;
-
-
         }
 
-
-    } catch(error) {
-
-        console.log(error);
-
-    }
-
+    } catch(error) {console.log(error);}
 }
 
 
 
 async function logout(){
-
-
     await fetch(
         "/api/users/logout/",
         {
@@ -97,11 +71,8 @@ async function logout(){
         }
     );
 
-
     window.location="/login/";
-
 }
-
 
 
 document.addEventListener(

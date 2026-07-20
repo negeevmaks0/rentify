@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import Property, PropertyImage
 
 # Register your models here.
@@ -34,7 +33,6 @@ class PropertyAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
 
     list_per_page = 20
-
 
 
 @admin.register(PropertyImage)

@@ -20,7 +20,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['booking']
 
-
     def get_queryset(self):
         return Review.objects.select_related('booking', 'author')
 

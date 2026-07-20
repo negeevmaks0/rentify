@@ -1,22 +1,15 @@
 async function loadBookings(filter=""){
 
-
 const container =
 document.getElementById("bookings");
-
 
 const response =
 await fetch(
     `/api/bookings/?filter=${filter}`,
-    {
-        credentials:"include"
-    }
+    {credentials:"include"}
 );
 
-
-
 if(!response.ok){
-
     container.innerHTML =
     `
     <div class="alert alert-danger">
@@ -25,18 +18,13 @@ if(!response.ok){
     `;
 
     return;
-
 }
 
 
-
-const bookings =
-await response.json();
-
+const bookings = await response.json();
 
 
 if(bookings.length === 0){
-
     container.innerHTML =
     `
     <p>
@@ -45,17 +33,13 @@ if(bookings.length === 0){
     `;
 
     return;
-
 }
-
 
 
 container.innerHTML = "";
 
 
-
 bookings.forEach(booking => {
-
 
 container.innerHTML += `
 
@@ -199,12 +183,10 @@ document
 .querySelectorAll(".cancel-btn")
 .forEach(btn=>{
 
-
 btn.addEventListener(
 "click",
 ()=>cancelBooking(btn.dataset.id)
 );
-
 
 });
 
@@ -212,34 +194,27 @@ document
 .querySelectorAll(".approve-btn")
 .forEach(btn=>{
 
-
 btn.addEventListener(
 "click",
 ()=>approveBooking(btn.dataset.id)
 );
 
-
 });
-
 
 document
 .querySelectorAll(".reject-btn")
 .forEach(btn=>{
-
 
 btn.addEventListener(
 "click",
 ()=>rejectBooking(btn.dataset.id)
 );
 
-
 });
-
 
 }
 
 async function approveBooking(id){
-
 
 const response =
 await fetch(
@@ -253,28 +228,20 @@ await fetch(
 
 
 if(response.ok){
-
     loadBookings();
-
 }
-else{
 
+else{
     const data =
     await response.json();
 
-    alert(
-        JSON.stringify(data)
-    );
-
+    alert(JSON.stringify(data));
 }
 
-
 }
-
 
 
 async function rejectBooking(id){
-
 
 const response =
 await fetch(
@@ -286,31 +253,21 @@ await fetch(
 );
 
 
-
 if(response.ok){
-
     loadBookings();
-
 }
-else{
 
+else{
     const data =
     await response.json();
 
-    alert(
-        JSON.stringify(data)
-    );
-
+    alert(JSON.stringify(data));
 }
 
-
 }
-
-
 
 
 async function cancelBooking(id){
-
 
 const response =
 await fetch(
@@ -320,31 +277,22 @@ await fetch(
 method:"PATCH",
 
 credentials:"include"
-
 }
 );
 
 
-
 if(response.ok){
-
     loadBookings();
-
 }
-else{
 
+else{
     const data =
     await response.json();
 
-    alert(
-        JSON.stringify(data)
-    );
-
+    alert(JSON.stringify(data));
 }
 
-
 }
-
 
 
 loadBookings();
@@ -352,12 +300,10 @@ loadBookings();
 document
 .querySelectorAll(".filter-btn")
 .forEach(btn=>{
-
     btn.addEventListener(
         "click",
         ()=>loadBookings(
             btn.dataset.filter
         )
     );
-
 });

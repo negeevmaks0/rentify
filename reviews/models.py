@@ -4,9 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from users.models import User
 from bookings.models import Booking
 
-
-
-
 # Create your models here.
 
 class Review(models.Model):

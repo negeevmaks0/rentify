@@ -21,7 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = Env()
 Env.read_env(BASE_DIR / '.env')
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -30,7 +29,6 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
-
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 
@@ -38,7 +36,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'users.User'
-
 
 # Application definition
 
@@ -60,24 +57,19 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist'
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'users.authentication.CookieJWTAuthentication',
     ],
-
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ]
 }
 
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7)
 }
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -110,7 +102,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rentify.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -120,7 +111,6 @@ DATABASES = {
         'NAME': BASE_DIR / env('DB_NAME'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -140,24 +130,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = env('LANGUAGE_CODE', default='en-us')
-
 TIME_ZONE = env('TIME_ZONE', default='UTC')
 
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 LOGIN_URL = '/login/'
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

@@ -24,7 +24,6 @@ class PropertyCreatePageView(TemplateView):
     template_name = 'properties/create.html'
 
 
-
 class PropertyListPageView(TemplateView):
     template_name = 'properties/list.html'
 
@@ -33,11 +32,9 @@ class PropertyCabinetPageView(TemplateView):
     template_name = "properties/cabinet.html"
 
 
-
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
     filterset_class = PropertyFilter
-
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_image(self, request, pk=None):
@@ -68,7 +65,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
                     context={"request":request}
                 ).data
             )
-
 
         return Response(created)
 
@@ -103,7 +99,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [AllowAny]
 
-
         return [permission() for permission in permission_classes]
 
 
@@ -130,10 +125,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
     )
 
 
-
 class PropertyImageViewSet(viewsets.ModelViewSet):
     serializer_class = PropertyImageSerializer
-
 
     def get_queryset(self):
         return PropertyImage.objects.all()

@@ -1,12 +1,7 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-
 class IsLandlord(BasePermission):
-    '''
-    Только арендодатели
-    '''
-
     def has_permission(self, request, view):
         return bool(
             request.user
@@ -15,12 +10,7 @@ class IsLandlord(BasePermission):
         )
 
 
-
 class IsTenant(BasePermission):
-    '''
-    Только арендаторы
-    '''
-
     def has_permission(self, request, view):
         return bool(
             request.user
@@ -31,7 +21,6 @@ class IsTenant(BasePermission):
 
 
 class IsOwnerOrReadOnly(BasePermission):
-
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
@@ -39,11 +28,6 @@ class IsOwnerOrReadOnly(BasePermission):
         return obj.owner == request.user
 
 
-
 class IsPropertyOwner(BasePermission):
-    """
-    Проверка владельца объявления через изображение
-    """
-
     def has_object_permission(self, request, view, obj):
         return obj.property.owner == request.user

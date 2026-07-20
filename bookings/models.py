@@ -7,13 +7,9 @@ from users.models import User
 from properties.models import Property
 
 
-
 def validate_future_date(value):
     if value <= timezone.now().date():
-        raise ValidationError(
-            'Booking date must be in the future'
-        )
-
+        raise ValidationError('Booking date must be in the future')
 
 # Create your models here.
 
@@ -44,9 +40,7 @@ class Booking(models.Model):
     booking_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        validators=[
-            MinValueValidator(0)
-        ],
+        validators=[MinValueValidator(0)],
         default=0
     )
 
@@ -62,7 +56,7 @@ class Booking(models.Model):
 
     def __str__(self):
         return f'{self.tenant} - {self.property}'
-
+        
 
     class Meta:
         ordering = ['-booking_date']

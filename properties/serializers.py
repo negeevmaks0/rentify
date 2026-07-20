@@ -4,7 +4,6 @@ from users.serializers import UserSerializer
 from rest_framework import serializers
 
 
-
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
@@ -25,12 +24,9 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         return value
 
 
-
 class PropertySerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
-
     images = PropertyImageSerializer(many=True, read_only=True)
-
     main_image = serializers.SerializerMethodField()
 
 

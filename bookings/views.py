@@ -29,76 +29,46 @@ def booking_list_page(request):
     )
 
 
-
 class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer
 
-
     def get_queryset(self):
-
         user = self.request.user
 
         if user.role == 'tenant':
-            queryset = Booking.objects.filter(
-                tenant=user
-            )
+            queryset = Booking.objects.filter(tenant=user)
 
             booking_filter = self.request.query_params.get("filter")
-
 
             if booking_filter == "active":
                 queryset = queryset.filter(
                     end_date__gte=timezone.now().date(),
-                    status__in=[
-                        "pending",
-                        "approved"
-                    ]
+                    status__in=["pending", "approved"]
                 )
-
 
             elif booking_filter == "completed":
-                queryset = queryset.filter(
-                    end_date__lt=timezone.now().date()
-                )
-
+                queryset = queryset.filter(end_date__lt=timezone.now().date())
 
             elif booking_filter == "cancelled":
-                queryset = queryset.filter(
-                    status="cancelled"
-                )
-
+                queryset = queryset.filter(status="cancelled")
 
             return queryset
 
-
         if user.role == 'landlord':
-            queryset = Booking.objects.filter(
-                property__owner=user
-            )
+            queryset = Booking.objects.filter(property__owner=user)
 
             booking_filter = self.request.query_params.get("filter")
 
-
             if booking_filter == "pending":
-                queryset = queryset.filter(
-                    status="pending"
-                )
-
+                queryset = queryset.filter(status="pending")
 
             elif booking_filter == "approved":
-                queryset = queryset.filter(
-                    status="approved"
-                )
-
+                queryset = queryset.filter(status="approved")
 
             elif booking_filter == "rejected":
-                queryset = queryset.filter(
-                    status="rejected"
-                )
-
+                queryset = queryset.filter(status="rejected")
 
             return queryset
-
 
         return Booking.objects.none()
 
@@ -129,12 +99,9 @@ class BookingViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN
             )
 
-
         if booking.status != 'pending':
             return Response(
-                {
-                    "detail": "Only pending bookings can be approved."
-                },
+                {"detail": "Only pending bookings can be approved."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -143,20 +110,13 @@ class BookingViewSet(viewsets.ModelViewSet):
             status="approved",
             start_date__lt=booking.end_date,
             end_date__gt=booking.start_date
-        ).exclude(
-            id=booking.id
-        ).exists()
-
+        ).exclude(id=booking.id).exists()
 
         if overlap:
             return Response(
-                {
-                    "detail":
-                    "Another approved booking exists for these dates."
-                },
+                {"detail": "Another approved booking exists for these dates."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
         booking.status = 'approved'
         booking.save()
@@ -176,10 +136,7 @@ class BookingViewSet(viewsets.ModelViewSet):
 
         if booking.status != 'pending':
             return Response(
-                {
-                    "detail":
-                    "Only pending bookings can be rejected."
-                },
+                {"detail": "Only pending bookings can be rejected."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -223,7 +180,6 @@ class BookingViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def history(self, request):
         bookings = self.get_queryset().filter(end_date__lt=timezone.now().date())
-
         serializer = self.get_serializer(bookings, many=True)
 
         return Response(serializer.data)

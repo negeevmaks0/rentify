@@ -44,35 +44,25 @@ a{
 }
 
 .property-card{
-
     background:#071a33;
     color:white;
     border:none;
     border-radius:15px;
     overflow:hidden;
-
 }
-
 
 .property-image{
-
     height:220px;
     object-fit:cover;
-
 }
 
-
 .property-card:hover{
-
     transform:translateY(-5px);
     transition:0.3s;
-
 }
 
 .property-modal {
-
     display:none;
-
     position:fixed;
 
     top:0;
@@ -87,37 +77,26 @@ a{
 
     justify-content:center;
     align-items:center;
-
 }
 
-
 .property-modal-content {
-
     background:white;
-
     color:black;
 
     width:90%;
     max-width:900px;
-
     max-height:90vh;
 
     overflow:auto;
 
     border-radius:15px;
-
     padding:25px;
 
     position:relative;
-
 }
 
-
 .property-modal .btn-close {
-
     position:absolute;
-
     right:20px;
     top:20px;
-
 }

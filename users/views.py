@@ -16,8 +16,6 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
-
-
 def set_token_cookies(response, user):
     refresh = RefreshToken.for_user(user)
 
@@ -38,21 +36,17 @@ def set_token_cookies(response, user):
     return response
 
 
-
 class LoginPageView(TemplateView):
     template_name = 'users/login.html'
-
 
 
 class RegisterPageView(TemplateView):
     template_name = 'users/register.html'
 
 
-
 class RegisterView(APIView):
     authentication_classes = []
     permission_classes = []
-
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -68,7 +62,6 @@ class RegisterView(APIView):
         return set_token_cookies(response, user)
 
 
-
 class ProfileView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
@@ -77,10 +70,8 @@ class ProfileView(RetrieveUpdateAPIView):
         return self.request.user
 
 
-
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
-
 
     def post(self, request):
         response = Response(
@@ -94,16 +85,13 @@ class LogoutView(APIView):
         return response
 
 
-
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
 
-
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-
         user = authenticate(username=username, password=password)
 
         if not user:

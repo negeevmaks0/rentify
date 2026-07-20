@@ -17,34 +17,25 @@ function getCookie(name) {
             }
         }
     }
-
     return cookieValue;
 }
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     const propertyText = document.getElementById("propertyId").textContent;
-
     const propertyId = propertyText.replace(/\D/g, "");
-
     const container = document.getElementById("propertyContainer");
 
-
     try {
-
         const response = await fetch(`/api/properties/${propertyId}/`);
 
         if (!response.ok) {
             throw new Error("Property not found");
         }
 
-
         const property = await response.json();
 
-
         container.innerHTML = `
-
             <div class="card">
 
                 <div id="propertyImages">
@@ -156,9 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
 
             </div>
-
         `;
-
 
         const startInput =
         document.getElementById("startDate");
@@ -175,9 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const bookingBtn =
         document.getElementById("bookingBtn");
 
-
         function calculatePrice(){
-
             if(
                 !startInput.value ||
                 !endInput.value
@@ -191,50 +178,34 @@ document.addEventListener("DOMContentLoaded", async () => {
             today.setHours(0,0,0,0);
 
             if(startInput.value){
-
                 const selected =
                     new Date(startInput.value);
 
                 if(selected < today){
-
                     startInput.value = "";
-
                     bookingBtn.disabled = true;
 
                     return;
-
                 }
-
             }
 
-            const start =
-                new Date(startInput.value);
+            const start = new Date(startInput.value);
 
-            const end =
-                new Date(endInput.value);
+            const end = new Date(endInput.value);
 
-            const diff =
-                (end-start)/(1000*60*60*24);
+            const diff = (end-start)/(1000*60*60*24);
 
             if(diff <= 0){
-
                 nightsText.innerText = 0;
-
                 totalText.innerText = 0;
-
                 bookingBtn.disabled = true;
 
                 return;
-
             }
 
             nightsText.innerText = diff;
-
-            totalText.innerText =
-                diff * Number(property.price_per_night);
-
+            totalText.innerText = diff * Number(property.price_per_night);
             bookingBtn.disabled = false;
-
         }
 
         startInput.addEventListener(
@@ -268,60 +239,45 @@ document.addEventListener("DOMContentLoaded", async () => {
                 },
 
                 body:JSON.stringify({
-
                     property:property.id,
-
                     start_date:startInput.value,
-
                     end_date:endInput.value
-
                 })
-
             });
 
             if(response.ok){
-
                 alert("Booking created");
 
                 window.location="/bookings/";
 
                 return;
-
             }
 
-            const data =
-                await response.json();
+            const data = await response.json();
 
             const errorBox =
             document.getElementById("bookingError");
 
             if(data.non_field_errors){
-
                 errorBox.innerText =
                 data.non_field_errors[0];
-
             }
-            else if(data.detail){
 
+            else if(data.detail){
                 errorBox.innerText =
                 data.detail;
-
             }
-            else{
 
+            else{
                 errorBox.innerText =
                 "Booking error";
-
             }
 
             bookingBtn.disabled = false;
             bookingBtn.innerText = "Book property";
-
         });
 
-
     } catch(error) {
-
         console.error(error);
 
         container.innerHTML = `
@@ -329,7 +285,5 @@ document.addEventListener("DOMContentLoaded", async () => {
                 Cannot load property
             </div>
         `;
-
     }
-
 });

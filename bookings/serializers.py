@@ -8,7 +8,6 @@ from datetime import timedelta
 from django.utils import timezone
 
 
-
 class BookingSerializer(serializers.ModelSerializer):
     booking_price = serializers.DecimalField(
         max_digits=10,
@@ -34,7 +33,6 @@ class BookingSerializer(serializers.ModelSerializer):
     )
 
     nights = serializers.SerializerMethodField()
-
     can_manage = serializers.SerializerMethodField()
 
 
@@ -72,7 +70,6 @@ class BookingSerializer(serializers.ModelSerializer):
         validated_data['cancellation_deadline'] = deadline
 
         return Booking.objects.create(**validated_data)
-
 
 
     def validate(self, data):
@@ -115,7 +112,6 @@ class BookingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("This property is already booked for these dates.")
 
         return data
-
 
 
     class Meta:
