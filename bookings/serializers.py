@@ -69,9 +69,16 @@ class BookingSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         request = self.context['request']
+
+        if request.user.role != "tenant":
+            raise serializers.ValidationError(
+                "Only tenants can create bookings."
+            )
+
         start_date = data['start_date']
         end_date = data['end_date']
         property = data['property']
+
 
         if property.owner == request.user:
             raise serializers.ValidationError('You cannot book your own property.')
@@ -84,17 +91,16 @@ class BookingSerializer(serializers.ModelSerializer):
         if start_date < today:
             raise serializers.ValidationError("Booking cannot start in the past.")
 
-        if start_date > end_date:
-            raise serializers.ValidationError("End date must be after start date.")
-
-        if start_date == end_date:
-            raise serializers.ValidationError("Booking must be at least one night.")
+        if end_date <= start_date:
+            raise serializers.ValidationError(
+                "Booking must contain at least one night."
+            )
 
         exists = Booking.objects.filter(
             property=property,
             status='approved',
-            start_date__lte=end_date,
-            end_date__gte=start_date
+            start_date__lt=end_date,
+            end_date__gt=start_date
         ).exists()
 
         if exists:
