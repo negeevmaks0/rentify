@@ -17,8 +17,6 @@ from .filters import PropertyFilter
 
 from rest_framework.parsers import MultiPartParser, FormParser
 
-
-
 # Create your views here.
 
 
@@ -29,6 +27,10 @@ class PropertyCreatePageView(TemplateView):
 
 class PropertyListPageView(TemplateView):
     template_name = 'properties/list.html'
+
+
+class PropertyCabinetPageView(TemplateView):
+    template_name = "properties/cabinet.html"
 
 
 

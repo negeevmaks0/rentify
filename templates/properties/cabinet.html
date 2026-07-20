@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Properties</title>
+</head>
+<body>
+
+<h1>My Properties</h1>
+
+<div id="properties"></div>
+
+<script>
+
+async function loadProperties(){
+
+    const response = await fetch(
+        "/api/properties/",
+        {
+            credentials:"include"
+        }
+    );
+
+    const properties = await response.json();
+
+    const container = document.getElementById("properties");
+
+    container.innerHTML = "";
+
+    properties.forEach(property=>{
+
+        container.innerHTML += `
+
+        <div style="border:1px solid #ccc;padding:15px;margin:15px;">
+
+            <h3>${property.title}</h3>
+
+            <p>${property.location}</p>
+
+            <p>${property.price_per_night} €/night</p>
+
+            <p>
+
+                Status:
+                ${
+                    property.is_active
+                    ? "Active"
+                    : "Inactive"
+                }
+
+            </p>
+
+            <button onclick="toggleProperty(${property.id})">
+
+                ${
+                    property.is_active
+                    ? "Deactivate"
+                    : "Activate"
+                }
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+async function toggleProperty(id){
+
+    const response = await fetch(
+
+        `/api/properties/${id}/toggle_active/`,
+
+        {
+
+            method:"PATCH",
+
+            credentials:"include"
+
+        }
+
+    );
+
+    if(response.ok){
+
+        loadProperties();
+
+    }
+
+}
+
+loadProperties();
+
+</script>
+
+</body>
+</html>
