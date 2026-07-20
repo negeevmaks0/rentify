@@ -65,10 +65,36 @@ container.innerHTML += `
 
 <div class="card-body">
 
+${
+booking.property_detail.images.length
+
+?
+
+`
+<img
+src="${booking.property_detail.images[0].image}"
+class="img-fluid rounded mb-3"
+style="
+width:250px;
+height:160px;
+object-fit:cover;
+">
+`
+
+:
+
+""
+
+}
+
 
 <h4>
-${booking.property}
+${booking.property_detail.title}
 </h4>
+
+<p>
+📍 ${booking.property_detail.location}
+</p>
 
 
 <p>
@@ -79,7 +105,13 @@ ${booking.end_date}
 
 
 <p>
-Price:
+🌙 Nights:
+${booking.nights}
+</p>
+
+
+<p>
+💰 Price:
 ${booking.booking_price} €
 </p>
 
