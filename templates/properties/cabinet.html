@@ -198,17 +198,18 @@ async function loadBookings(){
 
         container.innerHTML += `
 
-
         <div class="col-md-6">
-
 
             <div class="property-card p-3">
 
-
                 <h4>
-                    ${booking.property.title}
+                    ${booking.property_detail.title}
                 </h4>
 
+                <p>
+                    Tenant:
+                    ${booking.tenant_username}
+                </p>
 
                 <p>
                     ${booking.start_date}
@@ -216,13 +217,20 @@ async function loadBookings(){
                     ${booking.end_date}
                 </p>
 
+                <p>
+                    Nights:
+                    ${booking.nights}
+                </p>
+
+                <p>
+                    Price:
+                    ${booking.booking_price} €
+                </p>
 
                 <p>
                     Status:
                     ${booking.status}
                 </p>
-
-
 
                 ${
                 booking.status === "pending"

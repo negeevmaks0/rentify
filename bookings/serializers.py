@@ -19,6 +19,11 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    tenant_username = serializers.CharField(
+        source="tenant.username",
+        read_only=True
+    )
+
     cancellation_deadline = serializers.DateField(
         read_only=True
     )
@@ -122,6 +127,7 @@ class BookingSerializer(serializers.ModelSerializer):
             'property',
             'property_detail',
             'tenant',
+            'tenant_username',
             'start_date',
             'end_date',
             'can_manage',
