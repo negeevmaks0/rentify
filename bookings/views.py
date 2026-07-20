@@ -22,6 +22,13 @@ def booking_create_page(request, property_id):
     )
 
 
+def booking_list_page(request):
+    return render(
+        request,
+        "bookings/list.html"
+    )
+
+
 
 class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer

@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import Booking
 from properties.models import Property
+from properties.serializers import PropertySerializer
 
 from datetime import timedelta
 from django.utils import timezone
@@ -19,12 +20,17 @@ class BookingSerializer(serializers.ModelSerializer):
     cancellation_deadline = serializers.DateField(read_only=True)
     status = serializers.CharField(read_only=True)
 
+    property_detail = PropertySerializer(
+        source="property",
+        read_only=True
+    )
+
     def create(self, validated_data):
         request = self.context['request']
 
         property = validated_data['property']
+        
         start_date = validated_data['start_date']
-
         nights = (validated_data['end_date'] - start_date).days
 
         deadline = start_date - timedelta(days=2)
@@ -84,6 +90,7 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'property',
+            'property_detail',
             'tenant',
             'start_date',
             'end_date',
