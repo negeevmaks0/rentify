@@ -100,6 +100,13 @@ class BookingViewSet(viewsets.ModelViewSet):
     def approve(self, request, pk=None):
         booking = self.get_object()
 
+        if booking.property.owner != request.user:
+            return Response(
+                {"detail": "You are not the owner of this property"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+
         if booking.status != 'pending':
             return Response(
                 {
@@ -108,15 +115,28 @@ class BookingViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if booking.property.owner != request.user:
+        overlap = Booking.objects.filter(
+            property=booking.property,
+            status="approved",
+            start_date__lt=booking.end_date,
+            end_date__gt=booking.start_date
+        ).exclude(
+            id=booking.id
+        ).exists()
+
+
+        if overlap:
             return Response(
-                {"detail": "You are not the owner of this property"},
-                status=status.HTTP_403_FORBIDDEN
+                {
+                    "detail":
+                    "Another approved booking exists for these dates."
+                },
+                status=status.HTTP_400_BAD_REQUEST
             )
+
 
         booking.status = 'approved'
         booking.save()
-
 
         return Response({"status": "Booking approved"})
 

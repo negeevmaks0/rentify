@@ -35,6 +35,14 @@ class BookingSerializer(serializers.ModelSerializer):
 
     nights = serializers.SerializerMethodField()
 
+    can_manage = serializers.SerializerMethodField()
+
+
+    def get_can_manage(self, obj):
+        request = self.context["request"]
+
+        return obj.property.owner == request.user
+
 
     def get_nights(self, obj):
         return (obj.end_date - obj.start_date).days
@@ -120,6 +128,7 @@ class BookingSerializer(serializers.ModelSerializer):
             'tenant',
             'start_date',
             'end_date',
+            'can_manage',
             'nights',
             'booking_date',
             'cancellation_deadline',

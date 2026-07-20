@@ -140,10 +140,37 @@ booking.status === "pending"
 <button
 class="btn btn-danger cancel-btn"
 data-id="${booking.id}">
-
 Cancel
-
 </button>
+
+
+${
+booking.can_manage
+
+?
+
+`
+
+<button
+class="btn btn-success approve-btn"
+data-id="${booking.id}">
+Approve
+</button>
+
+
+<button
+class="btn btn-warning reject-btn"
+data-id="${booking.id}">
+Reject
+</button>
+
+`
+
+:
+
+""
+
+}
 
 `
 
@@ -180,6 +207,101 @@ btn.addEventListener(
 
 
 });
+
+document
+.querySelectorAll(".approve-btn")
+.forEach(btn=>{
+
+
+btn.addEventListener(
+"click",
+()=>approveBooking(btn.dataset.id)
+);
+
+
+});
+
+
+document
+.querySelectorAll(".reject-btn")
+.forEach(btn=>{
+
+
+btn.addEventListener(
+"click",
+()=>rejectBooking(btn.dataset.id)
+);
+
+
+});
+
+
+}
+
+async function approveBooking(id){
+
+
+const response =
+await fetch(
+`/api/bookings/${id}/approve/`,
+{
+    method:"PATCH",
+    credentials:"include"
+}
+);
+
+
+
+if(response.ok){
+
+    loadBookings();
+
+}
+else{
+
+    const data =
+    await response.json();
+
+    alert(
+        JSON.stringify(data)
+    );
+
+}
+
+
+}
+
+
+
+async function rejectBooking(id){
+
+
+const response =
+await fetch(
+`/api/bookings/${id}/reject/`,
+{
+    method:"PATCH",
+    credentials:"include"
+}
+);
+
+
+
+if(response.ok){
+
+    loadBookings();
+
+}
+else{
+
+    const data =
+    await response.json();
+
+    alert(
+        JSON.stringify(data)
+    );
+
+}
 
 
 }
