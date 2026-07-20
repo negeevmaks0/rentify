@@ -98,6 +98,12 @@ class BookingViewSet(viewsets.ModelViewSet):
     def reject(self, request, pk=None):
         booking = self.get_object()
 
+        if booking.property.owner != request.user:
+            return Response(
+                {"detail": "You are not the owner of this property"},
+                status=403
+            )
+
         if booking.status != 'pending':
             return Response(
                 {

@@ -60,7 +60,7 @@ class PropertySerializer(serializers.ModelSerializer):
 
         return None
 
-        read_only_fields = (
-            'owner',
-            'created_at'
-        )
+    read_only_fields = (
+        'owner',
+        'created_at'
+    )

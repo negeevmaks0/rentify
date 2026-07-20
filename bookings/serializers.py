@@ -48,6 +48,11 @@ class BookingSerializer(serializers.ModelSerializer):
         start_date = validated_data['start_date']
         nights = (validated_data['end_date'] - start_date).days
 
+        if nights <= 0:
+            raise serializers.ValidationError(
+                "Booking must contain at least one night."
+            )
+
         deadline = start_date - timedelta(days=2)
 
         if deadline < timezone.now().date():
