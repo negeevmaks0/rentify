@@ -71,13 +71,66 @@ document.addEventListener("DOMContentLoaded", async () => {
                         ${property.price_per_night} € / night
                     </h4>
 
+                    <hr>
 
-                    <button 
-                        class="btn btn-primary"
+                    <div class="mb-3">
+
+                        <label>
+                            Check in
+                        </label>
+
+                        <input
+                            type="date"
+                            id="startDate"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Check out
+                        </label>
+
+                        <input
+                            type="date"
+                            id="endDate"
+                            class="form-control">
+
+                    </div>
+
+                    <p>
+
+                        Nights:
+                        <span id="nightCount">
+                            0
+                        </span>
+
+                    </p>
+
+                    <h4>
+
+                        Total:
+                        <span id="totalPrice">
+                            0
+                        </span>
+                        €
+
+                    </h4>
+
+                    <button
+                        class="btn btn-success"
                         id="bookingBtn"
-                    >
+                        disabled>
+
                         Book property
+
                     </button>
+
+                    <div
+                        id="bookingError"
+                        class="text-danger mt-2">
+                    </div>
 
                 </div>
 
@@ -86,13 +139,141 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
 
 
-        document
-            .getElementById("bookingBtn")
-            .addEventListener("click", () => {
+        const startInput =
+        document.getElementById("startDate");
 
-                console.log("Booking clicked");
+        const endInput =
+        document.getElementById("endDate");
+
+        const nightsText =
+        document.getElementById("nightCount");
+
+        const totalText =
+        document.getElementById("totalPrice");
+
+        const bookingBtn =
+        document.getElementById("bookingBtn");
+
+
+        function calculatePrice(){
+
+            if(
+                !startInput.value ||
+                !endInput.value
+            ){
+                return;
+            }
+
+            const today =
+            new Date();
+
+            today.setHours(0,0,0,0);
+
+            if(startInput.value){
+
+                const selected =
+                    new Date(startInput.value);
+
+                if(selected < today){
+
+                    startInput.value = "";
+
+                    bookingBtn.disabled = true;
+
+                    return;
+
+                }
+
+            }
+
+            const start =
+                new Date(startInput.value);
+
+            const end =
+                new Date(endInput.value);
+
+            const diff =
+                (end-start)/(1000*60*60*24);
+
+            if(diff <= 0){
+
+                nightsText.innerText = 0;
+
+                totalText.innerText = 0;
+
+                bookingBtn.disabled = true;
+
+                return;
+
+            }
+
+            nightsText.innerText = diff;
+
+            totalText.innerText =
+                diff * Number(property.price_per_night);
+
+            bookingBtn.disabled = false;
+
+        }
+
+        startInput.addEventListener(
+            "change",
+            calculatePrice
+        );
+
+        endInput.addEventListener(
+            "change",
+            calculatePrice
+        );
+
+        bookingBtn.addEventListener(
+        "click",
+        async ()=>{
+
+            const response =
+            await fetch(
+                "/api/bookings/",
+                {
+
+                method:"POST",
+
+                credentials:"include",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    property:property.id,
+
+                    start_date:startInput.value,
+
+                    end_date:endInput.value
+
+                })
 
             });
+
+            if(response.ok){
+
+                alert("Booking created");
+
+                window.location="/bookings/";
+
+                return;
+
+            }
+
+            const data =
+                await response.json();
+
+            document
+            .getElementById("bookingError")
+            .innerText =
+            JSON.stringify(data);
+
+        });
 
 
     } catch(error) {
