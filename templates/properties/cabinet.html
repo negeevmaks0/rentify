@@ -1,16 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Properties</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>My Properties</h1>
+{% block title %}
+Landlord Cabinet
+{% endblock %}
 
-<div id="properties"></div>
+
+{% block content %}
+
+<h1 class="mb-4">
+    My Cabinet
+</h1>
+
+
+<div class="mb-5">
+
+    <h2 class="mb-3">
+        My Properties
+    </h2>
+
+    <div id="properties"
+         class="row g-4">
+    </div>
+
+</div>
+
+
+
+<div>
+
+    <h2 class="mb-3">
+        Booking Requests
+    </h2>
+
+
+    <div id="bookings"
+         class="row g-4">
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
 
 <script>
+
 
 async function loadProperties(){
 
@@ -21,68 +59,102 @@ async function loadProperties(){
         }
     );
 
+
     const properties = await response.json();
 
-    const container = document.getElementById("properties");
 
-    container.innerHTML = "";
+    const container =
+        document.getElementById("properties");
+
+
+    container.innerHTML="";
+
 
     properties.forEach(property=>{
 
+
         container.innerHTML += `
 
-        <div style="border:1px solid #ccc;padding:15px;margin:15px;">
+        <div class="col-md-6 col-lg-4">
 
-            <h3>${property.title}</h3>
 
-            <p>${property.location}</p>
+            <div class="property-card p-3">
 
-            <p>${property.price_per_night} €/night</p>
 
-            <p>
+                <h3>
+                    ${property.title}
+                </h3>
 
-                Status:
-                ${
+
+                <p>
+                    ${property.location}
+                </p>
+
+
+                <p>
+                    ${property.price_per_night} €/night
+                </p>
+
+
+                <span class="badge bg-${
+                    property.is_active
+                    ? "success"
+                    : "secondary"
+                }">
+
+                    ${
                     property.is_active
                     ? "Active"
                     : "Inactive"
-                }
+                    }
 
-            </p>
+                </span>
 
-            <button onclick="toggleProperty(${property.id})">
+
+                <button
+                class="btn btn-primary mt-3"
+                onclick="toggleProperty(${property.id})">
+
 
                 ${
-                    property.is_active
-                    ? "Deactivate"
-                    : "Activate"
+                property.is_active
+                ? "Deactivate"
+                : "Activate"
                 }
 
-            </button>
+
+                </button>
+
+
+            </div>
+
 
         </div>
 
         `;
 
+
     });
+
 
 }
 
+
+
 async function toggleProperty(id){
+
 
     const response = await fetch(
 
         `/api/properties/${id}/toggle_active/`,
 
         {
-
             method:"PATCH",
-
             credentials:"include"
-
         }
 
     );
+
 
     if(response.ok){
 
@@ -90,11 +162,192 @@ async function toggleProperty(id){
 
     }
 
+
 }
 
+
+
+async function loadBookings(){
+
+
+    const response = await fetch(
+
+        "/api/bookings/",
+
+        {
+            credentials:"include"
+        }
+
+    );
+
+
+    const bookings =
+        await response.json();
+
+
+    const container =
+        document.getElementById("bookings");
+
+
+    container.innerHTML="";
+
+
+
+    bookings.forEach(booking=>{
+
+
+        container.innerHTML += `
+
+
+        <div class="col-md-6">
+
+
+            <div class="property-card p-3">
+
+
+                <h4>
+                    ${booking.property.title}
+                </h4>
+
+
+                <p>
+                    ${booking.start_date}
+                    -
+                    ${booking.end_date}
+                </p>
+
+
+                <p>
+                    Status:
+                    ${booking.status}
+                </p>
+
+
+
+                ${
+                booking.status === "pending"
+
+                ?
+
+                `
+
+                <button
+                class="btn btn-success"
+                onclick="approveBooking(${booking.id})">
+
+                Approve
+
+                </button>
+
+
+                <button
+                class="btn btn-danger"
+                onclick="rejectBooking(${booking.id})">
+
+                Reject
+
+                </button>
+
+                `
+
+                :
+
+                ""
+
+                }
+
+
+            </div>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+}
+
+
+
+async function approveBooking(id){
+
+
+    const response = await fetch(
+
+        `/api/bookings/${id}/approve/`,
+
+        {
+            method:"PATCH",
+            credentials:"include"
+        }
+
+    );
+
+
+    if(response.ok){
+
+        loadBookings();
+
+    }
+    else{
+
+        alert(
+            JSON.stringify(
+                await response.json()
+            )
+        );
+
+    }
+
+
+}
+
+
+
+async function rejectBooking(id){
+
+
+    const response = await fetch(
+
+        `/api/bookings/${id}/reject/`,
+
+        {
+            method:"PATCH",
+            credentials:"include"
+        }
+
+    );
+
+
+    if(response.ok){
+
+        loadBookings();
+
+    }
+    else{
+
+        alert(
+            JSON.stringify(
+                await response.json()
+            )
+        );
+
+    }
+
+
+}
+
+
+
 loadProperties();
+loadBookings();
+
 
 </script>
 
-</body>
-</html>
+
+{% endblock %}
