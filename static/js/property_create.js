@@ -71,6 +71,11 @@ const files =
 
 
 
+const uploadStatus =
+    document.getElementById(
+        "uploadStatus"
+    );
+
 if(files.length > 0){
 
 
@@ -90,6 +95,16 @@ if(files.length > 0){
         );
 
     }
+
+    uploadStatus.innerHTML = `
+
+    <div class="alert alert-info">
+
+        ⏳ Uploading ${files.length} image(s)...
+
+    </div>
+
+    `;
 
 
 
@@ -124,6 +139,16 @@ if(files.length > 0){
 
     }
 
+    uploadStatus.innerHTML = `
+
+    <div class="alert alert-success">
+
+        ✅ ${files.length} image(s) uploaded successfully!
+
+    </div>
+
+    `;
+
 
 }
 
@@ -131,6 +156,49 @@ if(files.length > 0){
 
 window.location="/properties/";
 
+
+
+});
+
+document
+.getElementById("images")
+.addEventListener(
+"change",
+function(){
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    preview.innerHTML = "";
+
+
+    Array.from(this.files)
+    .forEach(file => {
+
+
+        const item =
+        document.createElement(
+            "div"
+        );
+
+
+        item.className =
+        "mb-2 text-secondary";
+
+
+        item.innerHTML =
+        `
+        📷 ${file.name}
+        (${Math.round(file.size / 1024)} KB)
+        `;
+
+
+        preview.appendChild(item);
+
+    });
 
 
 });
