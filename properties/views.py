@@ -20,6 +20,10 @@ from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 
+class PropertyEditPageView(TemplateView):
+    template_name = 'properties/edit.html'
+
+
 class PropertyCreatePageView(TemplateView):
     template_name = 'properties/create.html'
 
