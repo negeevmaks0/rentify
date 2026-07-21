@@ -4,6 +4,21 @@ from .models import Review
 from bookings.models import Booking
 
 
+
+class PropertyReviewSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Review
+
+        fields = (
+            'author',
+            'rating',
+            'comment',
+            'created_at'
+        )
+
+
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField(read_only=True)
     booking = serializers.PrimaryKeyRelatedField(queryset=Booking.objects.all())

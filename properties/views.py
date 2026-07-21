@@ -76,7 +76,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        property.delete()
+        property.is_deleted = True
+        property.is_active = False
+        property.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -128,10 +130,16 @@ class PropertyViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         if user.is_authenticated:
-            if user.role == 'landlord':
-                return Property.objects.filter(owner=user)
+            if user.role == "landlord":
+                return Property.objects.filter(
+                    owner=user,
+                    is_deleted=False
+                )
 
-        return Property.objects.filter(is_active=True)
+        return Property.objects.filter(
+            is_active=True,
+            is_deleted=False
+        )
 
 
     def get_permissions(self):

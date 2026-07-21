@@ -325,13 +325,59 @@ function openPropertyModal(property){
 
             </p>
 
+            <div class="property-reviews">
+                <h3>
+                    Reviews
+                    ${
+                        property.average_rating
+                        ?
+                        `<span class="review-average">
+                            (${property.average_rating} ⭐)
+                        </span>`
+                        :
+                        ""
+                    }
+                </h3>
+
+                ${
+                    property.reviews_count > 0
+                    ?
+                    `
+                    <div class="reviews-list">
+                        ${
+                            property.reviews.map(
+                                review => `
+                                <div class="review-item">
+                                    <strong>
+                                        ${"⭐".repeat(review.rating)}
+                                    </strong>
+
+                                    <p title="${review.comment}">
+                                        ${review.comment}
+                                    </p>
+
+                                    <small>
+                                        — ${review.author}
+                                    </small>
+                                </div>
+                                `
+                            ).join("")
+                        }
+                    </div>
+                    `
+                    :
+                    `
+                    <p class="text-secondary">
+                        No reviews yet.
+                    </p>
+                    `
+                }
+            </div>
 
             <div
                 class="property-details-grid">
 
-
                 <div>
-
                     <span>
                         Rooms
                     </span>
@@ -339,12 +385,9 @@ function openPropertyModal(property){
                     <strong>
                         ${property.room_count}
                     </strong>
-
                 </div>
 
-
                 <div>
-
                     <span>
                         Price
                     </span>
@@ -353,12 +396,8 @@ function openPropertyModal(property){
                         ${property.price_per_night} €
                         <small>/ night</small>
                     </strong>
-
                 </div>
-
-
             </div>
-
 
             <button
                 class="btn btn-success

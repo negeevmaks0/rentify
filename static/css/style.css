@@ -575,6 +575,31 @@ a{
     position:relative;
 }
 
+.property-rating{
+    margin-top:15px;
+    padding:10px 14px;
+    border-radius:12px;
+    background:#1e293b;
+    color:#facc15;
+    font-weight:600;
+}
+
+.property-reviews{
+    margin-top:25px;
+}
+
+.review-item{
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:14px;
+    background:#1e293b;
+}
+
+.review-item p{
+    margin:8px 0;
+    color:#cbd5e1;
+}
+
 .booking-image{
     width:100%;
     height:220px;
@@ -1216,4 +1241,50 @@ a{
             #16213e,
             #071a33
         );
+}
+
+.property-reviews {
+    margin-top: 25px;
+}
+
+.property-reviews h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-average {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: normal;
+}
+
+.review-item {
+    background: #334155;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+
+.review-item strong {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.review-item p {
+    margin: 5px 0;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.review-item small {
+    font-size: 0.75rem;
+    color: #94a3b8;
 }
