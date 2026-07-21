@@ -1,309 +1,397 @@
-async function loadBookings(filter=""){
+let currentFilter = "";
 
-const container =
-document.getElementById("bookings");
 
-const response =
-await fetch(
-    `/api/bookings/?filter=${filter}`,
-    {credentials:"include"}
-);
 
-if(!response.ok){
-    container.innerHTML =
-    `
-    <div class="alert alert-danger">
-    Cannot load bookings
-    </div>
+async function loadBookings(filter = ""){
+
+    const container =
+        document.getElementById("bookings");
+
+    const emptyState =
+        document.getElementById("emptyState");
+
+    const count =
+        document.getElementById("bookingCount");
+
+
+    currentFilter = filter;
+
+
+    container.innerHTML = `
+
+        <div class="col-12 text-center">
+
+            <p class="text-secondary">
+                Loading bookings...
+            </p>
+
+        </div>
+
     `;
 
-    return;
-}
+
+    try{
+
+        const response =
+            await fetch(
+                `/api/bookings/?filter=${filter}`,
+                {
+                    credentials:"include"
+                }
+            );
 
 
-const bookings = await response.json();
+        if(!response.ok){
+
+            throw new Error(
+                "Failed to load bookings"
+            );
+
+        }
 
 
-if(bookings.length === 0){
-    container.innerHTML =
-    `
-    <p>
-    No bookings yet
-    </p>
-    `;
-
-    return;
-}
+        const bookings =
+            await response.json();
 
 
-container.innerHTML = "";
+        count.innerText =
+            `${bookings.length} bookings`;
 
 
-bookings.forEach(booking => {
+        if(!bookings.length){
 
-container.innerHTML += `
+            container.innerHTML = "";
 
+            emptyState
+                .classList
+                .remove("d-none");
 
-<div class="card mb-3">
+            return;
 
-
-<div class="card-body">
-
-${
-booking.property_detail.images.length
-
-?
-
-`
-<img
-src="${booking.property_detail.images[0].image}"
-class="img-fluid rounded mb-3"
-style="
-width:250px;
-height:160px;
-object-fit:cover;
-">
-`
-
-:
-
-""
-
-}
+        }
 
 
-<h4>
-${booking.property_detail.title}
-</h4>
-
-<p>
-📍 ${booking.property_detail.location}
-</p>
+        emptyState
+            .classList
+            .add("d-none");
 
 
-<p>
-${booking.start_date}
- →
-${booking.end_date}
-</p>
+        renderBookings(bookings);
 
 
-<p>
-🌙 Nights:
-${booking.nights}
-</p>
+    }catch(error){
+
+        console.error(error);
 
 
-<p>
-💰 Price:
-${booking.booking_price} €
-</p>
+        container.innerHTML = `
 
+            <div class="col-12">
 
+                <div class="empty-state">
 
-<p>
+                    <h4>
+                        Unable to load bookings
+                    </h4>
 
-Status:
+                    <p>
+                        Please try again later.
+                    </p>
 
-<b>
-${booking.status}
-</b>
+                </div>
 
+            </div>
 
-</p>
+        `;
 
-
-
-${
-booking.status === "pending"
-
-?
-
-`
-
-<button
-class="btn btn-danger cancel-btn"
-data-id="${booking.id}">
-Cancel
-</button>
-
-
-${
-booking.can_manage
-
-?
-
-`
-
-<button
-class="btn btn-success approve-btn"
-data-id="${booking.id}">
-Approve
-</button>
-
-
-<button
-class="btn btn-warning reject-btn"
-data-id="${booking.id}">
-Reject
-</button>
-
-`
-
-:
-
-""
-
-}
-
-`
-
-:
-
-""
+    }
 
 }
 
 
 
-</div>
+function renderBookings(bookings){
+
+    const container =
+        document.getElementById("bookings");
 
 
-</div>
+    container.innerHTML = "";
 
 
-`;
+    bookings.forEach(booking => {
+
+        const property =
+            booking.property_detail;
 
 
-});
+        const image =
+            property.main_image
+            ||
+            "/static/images/no-image.jpg";
 
 
+        const statusClass =
+            `booking-status-${booking.status}`;
 
-document
-.querySelectorAll(".cancel-btn")
-.forEach(btn=>{
 
-btn.addEventListener(
-"click",
-()=>cancelBooking(btn.dataset.id)
-);
+        const canCancel =
+            booking.status === "pending";
 
-});
 
-document
-.querySelectorAll(".approve-btn")
-.forEach(btn=>{
+        container.innerHTML += `
 
-btn.addEventListener(
-"click",
-()=>approveBooking(btn.dataset.id)
-);
+            <div class="col-md-6 col-xl-4">
 
-});
+                <div class="booking-card h-100">
 
-document
-.querySelectorAll(".reject-btn")
-.forEach(btn=>{
 
-btn.addEventListener(
-"click",
-()=>rejectBooking(btn.dataset.id)
-);
+                    <div class="booking-image-wrapper">
 
-});
+                        <img
+                            src="${image}"
+                            class="booking-image"
+                            alt="${property.title}">
+
+
+                        <span
+                            class="booking-status
+                                   ${statusClass}">
+
+                            ${booking.status}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="booking-card-body">
+
+
+                        <h4>
+                            ${property.title}
+                        </h4>
+
+
+                        <p class="property-location">
+
+                            📍 ${property.location}
+
+                        </p>
+
+
+                        <div class="booking-dates">
+
+                            <div>
+
+                                <span>
+                                    Check-in
+                                </span>
+
+                                <strong>
+                                    ${booking.start_date}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="booking-arrow">
+
+                                →
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Check-out
+                                </span>
+
+                                <strong>
+                                    ${booking.end_date}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="booking-info-grid">
+
+
+                            <div>
+
+                                <span>
+                                    Nights
+                                </span>
+
+                                <strong>
+                                    ${booking.nights}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong>
+                                    ${booking.booking_price} €
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        ${
+                            canCancel
+
+                            ?
+
+                            `
+
+                            <button
+                                class="btn btn-outline-danger
+                                       w-100
+                                       cancel-btn"
+                                data-id="${booking.id}">
+
+                                Cancel booking
+
+                            </button>
+
+                            `
+
+                            :
+
+                            ""
+
+                        }
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    document
+        .querySelectorAll(".cancel-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => cancelBooking(
+                    button.dataset.id
+                )
+            );
+
+        });
 
 }
 
-async function approveBooking(id){
-
-const response =
-await fetch(
-`/api/bookings/${id}/approve/`,
-{
-    method:"PATCH",
-    credentials:"include"
-}
-);
-
-
-
-if(response.ok){
-    loadBookings();
-}
-
-else{
-    const data =
-    await response.json();
-
-    alert(JSON.stringify(data));
-}
-
-}
-
-
-async function rejectBooking(id){
-
-const response =
-await fetch(
-`/api/bookings/${id}/reject/`,
-{
-    method:"PATCH",
-    credentials:"include"
-}
-);
-
-
-if(response.ok){
-    loadBookings();
-}
-
-else{
-    const data =
-    await response.json();
-
-    alert(JSON.stringify(data));
-}
-
-}
 
 
 async function cancelBooking(id){
 
-const response =
-await fetch(
-`/api/bookings/${id}/cancel/`,
-{
+    const confirmed =
+        confirm(
+            "Are you sure you want to cancel this booking?"
+        );
 
-method:"PATCH",
 
-credentials:"include"
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    const response =
+        await fetch(
+
+            `/api/bookings/${id}/cancel/`,
+
+            {
+
+                method:"PATCH",
+
+                credentials:"include"
+
+            }
+
+        );
+
+
+    if(response.ok){
+
+        loadBookings(currentFilter);
+
+    }
+
+    else{
+
+        const data =
+            await response.json();
+
+
+        alert(
+            data.detail
+            ||
+            "Unable to cancel booking."
+        );
+
+    }
+
 }
-);
 
 
-if(response.ok){
-    loadBookings();
-}
 
-else{
-    const data =
-    await response.json();
+document
+    .querySelectorAll(".booking-filter")
+    .forEach(button => {
 
-    alert(JSON.stringify(data));
-}
+        button.addEventListener(
+            "click",
+            () => {
 
-}
+                document
+                    .querySelectorAll(
+                        ".booking-filter"
+                    )
+                    .forEach(
+                        btn =>
+                        btn.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                button
+                    .classList
+                    .add("active");
+
+
+                loadBookings(
+                    button.dataset.filter
+                );
+
+            }
+        );
+
+    });
+
 
 
 loadBookings();
-
-document
-.querySelectorAll(".filter-btn")
-.forEach(btn=>{
-    btn.addEventListener(
-        "click",
-        ()=>loadBookings(
-            btn.dataset.filter
-        )
-    );
-});

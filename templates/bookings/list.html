@@ -6,68 +6,164 @@ My bookings
 {% endblock %}
 
 
-
 {% block content %}
 
+<section class="bookings-hero">
 
-<h2>
-My bookings
-</h2>
+    <div class="bookings-hero-content">
 
-<div class="mb-3">
+        <span class="hero-badge">
+            Your stays
+        </span>
 
-<button 
-class="btn btn-primary filter-btn"
-data-filter="">
-All
-</button>
+        <h1>
+            Manage your
+            <span>bookings.</span>
+        </h1>
 
+        <p>
+            Keep track of your stays,
+            booking requests and upcoming trips
+            in one place.
+        </p>
 
-<button 
-class="btn btn-success filter-btn"
-data-filter="active">
-Active
-</button>
+    </div>
 
-
-<button 
-class="btn btn-secondary filter-btn"
-data-filter="completed">
-Completed
-</button>
+</section>
 
 
-<button 
-class="btn btn-danger filter-btn"
-data-filter="cancelled">
-Cancelled
-</button>
+<section class="bookings-section">
 
-<button class="filter-btn" data-filter="pending">
-Pending
-</button>
+    <div class="bookings-header">
 
-<button class="filter-btn" data-filter="approved">
-Approved
-</button>
+        <div>
 
-<button class="filter-btn" data-filter="rejected">
-Rejected
-</button>
+            <h2>
+                My bookings
+            </h2>
 
-</div>
+            <p>
+                Track your current and past reservations.
+            </p>
 
+        </div>
 
-<div id="bookings">
+        <span
+            id="bookingCount"
+            class="property-count">
 
-Loading...
+        </span>
 
-</div>
+    </div>
 
 
+    <div class="booking-filters">
+
+        <button
+            class="booking-filter active"
+            data-filter="">
+
+            All
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="active">
+
+            Active
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="pending">
+
+            Pending
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="approved">
+
+            Approved
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="completed">
+
+            Completed
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="cancelled">
+
+            Cancelled
+
+        </button>
+
+
+        <button
+            class="booking-filter"
+            data-filter="rejected">
+
+            Rejected
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="bookings"
+        class="row g-4">
+
+        <div class="col-12 text-center">
+
+            <p class="text-secondary">
+                Loading bookings...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="emptyState"
+        class="empty-state d-none">
+
+        <h4>
+            No bookings found
+        </h4>
+
+        <p>
+            Your bookings will appear here.
+        </p>
+
+        <a
+            href="/properties/"
+            class="btn btn-primary mt-3">
+
+            Browse properties
+
+        </a>
+
+    </div>
+
+</section>
 
 {% endblock %}
-
 
 
 {% block scripts %}
