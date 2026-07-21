@@ -7,11 +7,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .permissions import IsLandlord, IsOwnerOrReadOnly, IsPropertyOwner
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from django.views.generic import TemplateView
+from bookings.models import Booking
 
 from .filters import PropertyFilter
 
@@ -48,6 +49,37 @@ class PropertyCabinetPageView(TemplateView):
 class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
     filterset_class = PropertyFilter
+
+    def destroy(self, request, *args, **kwargs):
+        property = self.get_object()
+
+        if property.owner != request.user:
+            return Response(
+                {
+                    "detail":
+                    "You can only delete your own properties."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        active_bookings = Booking.objects.filter(
+            property=property,
+            status__in=[
+                "pending",
+                "approved"
+            ]).exists()
+
+        if active_bookings:
+            return Response({
+                    "detail":
+                    "This property has active bookings and cannot be deleted."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        property.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_image(self, request, pk=None):
