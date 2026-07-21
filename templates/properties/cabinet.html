@@ -30,6 +30,11 @@ Landlord Dashboard
 
 /* STATISTICS */
 
+.dashboard-booking-status.completed{
+    background:#1e40af;
+    color:#bfdbfe;
+}
+
 .dashboard-stats{
     display:grid;
     grid-template-columns:
@@ -1146,47 +1151,40 @@ async function loadBookings(){
 
 
                     ${
-                        booking.status === "pending"
-
-                        ?
-
+                    booking.status === "pending"
+                    ?
                         `
+                        <div class="booking-actions">
+
+                            <button
+                                class="btn btn-success"
+                                onclick="approveBooking(${booking.id})">
+                                    Approve
+                            </button>
+
+                            <button
+                                class="btn btn-danger"
+                                onclick="rejectBooking(${booking.id})">
+                                    Reject
+                            </button>
+
+                        </div>
+                        `
+                        :
+                        booking.status === "approved"
+                        ?
+                            `
 
                             <div class="booking-actions">
-
                                 <button
-                                    class="btn btn-success"
-                                    onclick="
-                                        approveBooking(
-                                            ${booking.id}
-                                        )
-                                    ">
-
-                                    Approve
-
+                                    class="btn btn-primary"
+                                    onclick="completeBooking(${booking.id})">
+                                        Complete
                                 </button>
-
-
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="
-                                        rejectBooking(
-                                            ${booking.id}
-                                        )
-                                    ">
-
-                                    Reject
-
-                                </button>
-
                             </div>
-
-                        `
-
+                            `
                         :
-
                         ""
-
                     }
 
                 </div>
@@ -1197,6 +1195,35 @@ async function loadBookings(){
 
     });
 
+}
+
+
+async function completeBooking(id){
+    const confirmed = confirm(
+        "Finish this booking?"
+    );
+
+    if(!confirmed){
+        return;
+    }
+
+    const response = await fetch(
+        `/api/bookings/${id}/complete/`,
+        {
+            method:"PATCH",
+            credentials:"include"
+        }
+    );
+
+    if(response.ok){loadBookings();}
+
+    else{
+        alert(
+            JSON.stringify(
+                await response.json()
+            )
+        );
+    }
 }
 
 

@@ -82,6 +82,8 @@ async function loadBookings(filter = ""){
             const historyBookings =
                 bookings.filter(
                     booking =>
+                    booking.status === "completed"
+                    ||
                     booking.status === "rejected"
                     ||
                     booking.status === "cancelled"
@@ -231,6 +233,9 @@ function renderBookings(
         const canCancel =
             booking.status === "pending";
 
+        const canReview =
+            booking.status === "completed";
+
 
         container.innerHTML += `
 
@@ -335,49 +340,46 @@ function renderBookings(
                                 <strong>
                                     ${booking.booking_price} €
                                 </strong>
-
                             </div>
-
-
                         </div>
 
 
                         ${
                             canCancel
-
                             ?
-
                             `
-
                             <button
                                 class="btn btn-outline-danger
                                        w-100
                                        cancel-btn"
                                 data-id="${booking.id}">
-
                                 Cancel booking
-
                             </button>
-
                             `
-
                             :
-
                             ""
-
                         }
 
-
+                        ${
+                            canReview
+                            ?
+                            `
+                            <button
+                                class="btn btn-success
+                                       w-100
+                                       mt-2"
+                                onclick="leaveReview(${booking.id})">
+                                Leave review
+                            </button>
+                            `
+                            :
+                            ""
+                        }
                     </div>
-
                 </div>
-
             </div>
-
         `;
-
     });
-
 
     document
         .querySelectorAll(".cancel-btn")
@@ -488,3 +490,8 @@ document
 
 
 loadBookings();
+
+function leaveReview(id){
+    window.location.href =
+        `/reviews/create/${id}/`;
+}

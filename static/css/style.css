@@ -582,6 +582,11 @@ a{
     display:block;
 }
 
+.booking-status.completed{
+    background:#1d4ed8;
+    color:#bfdbfe;
+}
+
 .booking-status{
     position:absolute;
     top:15px;

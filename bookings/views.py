@@ -66,6 +66,7 @@ class BookingViewSet(viewsets.ModelViewSet):
                     status__in=[
                         "pending",
                         "approved",
+                        "completed",
                         "rejected",
                         "cancelled"
                     ]
@@ -104,6 +105,28 @@ class BookingViewSet(viewsets.ModelViewSet):
             permission_classes = [IsTenant | IsLandlord]
 
         return [permission() for permission in permission_classes]
+
+
+    @action(detail=True, methods=['patch'])
+    def complete(self, request, pk=None):
+        booking = self.get_object()
+
+        if booking.property.owner != request.user:
+            return Response(
+                {"detail":"You cannot manage this booking."},
+                status=403
+            )
+
+        if booking.status != "approved":
+            return Response(
+                {"detail":"Only approved bookings can be completed."},
+                status=400
+            )
+
+        booking.status = "completed"
+        booking.save()
+
+        return Response({"status":"completed"})
 
 
     @action(detail=True, methods=['patch'])

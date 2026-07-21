@@ -32,8 +32,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         if booking.tenant != user:
             raise serializers.ValidationError('You can review only your own booking.')
 
-        if booking.status != 'approved':
-            raise serializers.ValidationError('You can review only approved bookings.')
+        if booking.status != 'completed':
+            raise serializers.ValidationError(
+                'You can review only completed bookings.'
+            )
 
         if hasattr(booking, 'review'):
             raise serializers.ValidationError('This booking already has a review.')
