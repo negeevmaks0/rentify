@@ -22,8 +22,16 @@ function getCookie(name) {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const propertyText = document.getElementById("propertyId").textContent;
-    const propertyId = propertyText.replace(/\D/g, "");
+    const propertyElement =
+        document.getElementById("propertyId");
+
+    if (!propertyElement) {
+        console.error("Property ID not found");
+        return;
+    }
+
+    const propertyId =
+        propertyElement.dataset.id;
     const container = document.getElementById("propertyContainer");
 
     try {
@@ -36,116 +44,119 @@ document.addEventListener("DOMContentLoaded", async () => {
         const property = await response.json();
 
         container.innerHTML = `
-            <div class="card">
+            <div class="booking-create-header">
+                <h1>
+                    Book this property
+                </h1>
 
-                <div id="propertyImages">
+                <p>
+                    Choose your dates and confirm your reservation.
+                </p>
+            </div>
 
-                    ${property.images.map(img => `
+            <div class="booking-gallery">
+                ${property.images.map(img => `
+                    <img
+                        src="${img.image}"
+                        class="booking-gallery-image">
+                `).join("")}
+            </div>
 
-                        <img 
-                            src="${img.image}"
-                            class="img-thumbnail m-2"
-                            style="
-                                width:250px;
-                                height:180px;
-                                object-fit:cover;
-                            "
-                        >
+            <div class="booking-property-info">
+                <h2>
+                    ${property.title}
+                </h2>
 
-                    `).join("")}
+                <p class="booking-location">
+                    📍 ${property.location}
+                </p>
 
-                </div>
+                <p>
+                    ${property.description}
+                </p>
 
-
-                <div class="card-body">
-
-                    <h3>
-                        ${property.title}
-                    </h3>
-
-
-                    <p>
-                        ${property.description}
-                    </p>
-
-
-                    <p>
-                        📍 ${property.location}
-                    </p>
-
-
-                    <p>
-                        🏠 Rooms: ${property.room_count}
-                    </p>
-
-
-                    <h4>
-                        ${property.price_per_night} € / night
-                    </h4>
-
-                    <hr>
-
-                    <div class="mb-3">
-
-                        <label>
-                            Check in
-                        </label>
-
-                        <input
-                            type="date"
-                            id="startDate"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>
-                            Check out
-                        </label>
-
-                        <input
-                            type="date"
-                            id="endDate"
-                            class="form-control">
-
-                    </div>
-
-                    <p>
-
-                        Nights:
-                        <span id="nightCount">
-                            0
+                <div class="booking-details">
+                    <div>
+                        <span>
+                            Rooms
                         </span>
 
-                    </p>
+                        <strong>
+                            ${property.room_count}
+                        </strong>
+                    </div>
 
-                    <h4>
+                    <div>
+                        <span>
+                            Price
+                        </span>
 
-                        Total:
+                        <strong>
+                            ${property.price_per_night} € / night
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-divider"></div>
+
+            <div class="booking-date-grid">
+                <div class="booking-field">
+                    <label>
+                        Check in
+                    </label>
+
+                    <input
+                        type="date"
+                        id="startDate">
+                </div>
+
+                <div class="booking-field">
+                    <label>
+                        Check out
+                    </label>
+
+                    <input
+                        type="date"
+                        id="endDate">
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <div>
+                    <span>
+                        Nights
+                    </span>
+
+                    <strong id="nightCount">
+                        0
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
                         <span id="totalPrice">
                             0
                         </span>
                         €
-
-                    </h4>
-
-                    <button
-                        class="btn btn-success"
-                        id="bookingBtn"
-                        disabled>
-
-                        Book property
-
-                    </button>
-
-                    <div
-                        id="bookingError"
-                        class="text-danger mt-2">
-                    </div>
-
+                    </strong>
                 </div>
+            </div>
 
+            <button
+                class="btn btn-primary booking-button"
+                id="bookingBtn"
+                disabled>
+                Book property
+            </button>
+
+            <div
+                id="bookingError"
+                class="booking-error">
             </div>
         `;
 
