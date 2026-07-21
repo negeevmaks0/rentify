@@ -230,7 +230,59 @@ Landlord Dashboard
 
 /* BOOKING CARDS */
 
+.dashboard-booking-status{
+    padding:6px 12px;
+
+    border-radius:10px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    text-transform:capitalize;
+
+    white-space:nowrap;
+
+    opacity:0;
+
+    transform:translateY(-18px);
+
+    transition:
+        opacity .3s ease,
+        transform .3s ease;
+}
+
+
+.dashboard-booking-card:hover
+.dashboard-booking-status{
+    opacity:1;
+
+    transform:translateY(0);
+}
+
+
+.dashboard-booking-status.pending{
+    background:#78350f;
+    color:#fcd34d;
+}
+
+.dashboard-booking-status.approved{
+    background:#14532d;
+    color:#86efac;
+}
+
+.dashboard-booking-status.rejected{
+    background:#7f1d1d;
+    color:#fca5a5;
+}
+
+.dashboard-booking-status.cancelled{
+    background:#334155;
+    color:#cbd5e1;
+}
+
 .dashboard-booking-card{
+    position:relative;
     height:100%;
 
     padding:24px;
@@ -1018,7 +1070,7 @@ async function loadBookings(){
 
 
                         <span
-                            class="booking-status
+                            class="dashboard-booking-status
                             ${booking.status}">
 
                             ${booking.status}
