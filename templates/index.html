@@ -6,8 +6,175 @@ Home
 
 {% block content %}
 
-<h1>Welcome to Rentify</h1>
+<section class="hero-section">
 
-<p>Rental platform.</p>
+    <div class="hero-content">
+
+        <span class="hero-badge">
+            Find your next place
+        </span>
+
+        <h1>
+            Find a place
+            <br>
+            that feels like
+            <span>home.</span>
+        </h1>
+
+        <p>
+            Discover comfortable places to stay,
+            find your next home and book it easily
+            with Rentify.
+        </p>
+
+        <div class="hero-actions">
+
+            <a
+                href="/properties/"
+                class="btn btn-primary btn-lg">
+
+                Browse properties
+
+            </a>
+
+            <a
+                href="/register/"
+                id="getStartedButton"
+                class="btn btn-outline-light btn-lg">
+
+                Get started
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="featured-section">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2>
+                Featured properties
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Discover places available for your next stay.
+            </p>
+
+        </div>
+
+        <a
+            href="/properties/"
+            class="btn btn-outline-primary">
+
+            View all
+
+        </a>
+
+    </div>
+
+
+    <div
+        id="featuredProperties"
+        class="row g-4">
+
+        <div class="col-12 text-center">
+
+            <p class="text-secondary">
+                Loading properties...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="features-section">
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔍
+                </div>
+
+                <h4>
+                    Find your place
+                </h4>
+
+                <p>
+                    Browse available properties
+                    and find the place that fits you.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📅
+                </div>
+
+                <h4>
+                    Easy booking
+                </h4>
+
+                <p>
+                    Choose your dates and send
+                    a booking request in a few clicks.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🏠
+                </div>
+
+                <h4>
+                    Manage your property
+                </h4>
+
+                <p>
+                    Landlords can create and manage
+                    their properties from one cabinet.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="/static/js/home.js"></script>
 
 {% endblock %}
