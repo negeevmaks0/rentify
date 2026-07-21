@@ -1,31 +1,3 @@
-async function checkUser(){
-
-    const response = await fetch(
-        "/api/users/profile/",
-        {
-            credentials:"include"
-        }
-    );
-
-
-    if(response.ok){
-
-        const user = await response.json();
-
-
-        if(user.role === "landlord"){
-
-            document
-            .getElementById("createButton")
-            .classList
-            .remove("d-none");
-
-        }
-
-    }
-
-}
-
 async function loadProperties(){
 
     const container = document.getElementById("properties");
@@ -293,6 +265,4 @@ window.location =
 
 }
 
-
-checkUser();
 loadProperties();
