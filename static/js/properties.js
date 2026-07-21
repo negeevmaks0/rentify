@@ -80,11 +80,6 @@ function renderProperties(properties){
 
     container.innerHTML = "";
 
-
-    count.innerText =
-        `${properties.length} properties`;
-
-
     if(!properties.length){
 
         emptyState
