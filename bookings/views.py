@@ -47,7 +47,7 @@ class BookingViewSet(viewsets.ModelViewSet):
                 )
 
             elif booking_filter == "completed":
-                queryset = queryset.filter(end_date__lt=today)
+                queryset = queryset.filter(status="completed")
 
             elif booking_filter == "cancelled":
                 queryset = queryset.filter(status="cancelled")

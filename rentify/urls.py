@@ -29,12 +29,13 @@ urlpatterns = [
     path('properties/', include('properties.urls')),
     path('bookings/', include('bookings.urls')),
     path('profile/', include('users.urls')),
+    path('reviews/', include('reviews.urls')),
 
     path('admin/', admin.site.urls),
     path('api/users/', include('users.api_urls')),
     path('api/properties/', include('properties.api_urls')),
     path('api/bookings/', include('bookings.api_urls')),
-    path('api/reviews/', include('reviews.urls')),
+    path('api/reviews/', include('reviews.api_urls')),
 ]
 
 if settings.DEBUG:

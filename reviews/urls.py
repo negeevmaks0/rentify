@@ -1,12 +1,12 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 
-from .views import ReviewViewSet
+from django.views.generic import TemplateView
 
-
-router = DefaultRouter()
-router.register('', ReviewViewSet, basename='reviews')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path(
+        'create/<int:booking_id>/',
+        TemplateView.as_view(template_name='reviews/create.html'),
+        name='review-create-page'
+    ),
 ]
