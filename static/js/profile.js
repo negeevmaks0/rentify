@@ -1,134 +1,185 @@
 async function loadProfile(){
 
-    const response = await fetch(
-        "/api/users/profile/",
-        {
-            credentials:"include"
-        }
-    );
+    const response =
+        await fetch(
+            "/api/users/profile/",
+            {
+                credentials:"include"
+            }
+        );
 
 
     if(!response.ok){
 
-        window.location = "/login/";
+        window.location =
+            "/login/";
 
         return;
 
     }
 
 
-    const user = await response.json();
+    const user =
+        await response.json();
 
 
     document
-    .getElementById("username")
-    .value = user.username;
+        .getElementById("username")
+        .value =
+        user.username;
 
 
     document
-    .getElementById("first_name")
-    .value = user.first_name || "";
+        .getElementById("first_name")
+        .value =
+        user.first_name || "";
 
 
     document
-    .getElementById("last_name")
-    .value = user.last_name || "";
+        .getElementById("last_name")
+        .value =
+        user.last_name || "";
 
 
     document
-    .getElementById("email")
-    .value = user.email;
+        .getElementById("email")
+        .value =
+        user.email;
 
 
     document
-    .getElementById("role")
-    .value = user.role;
+        .getElementById("role")
+        .value =
+        user.role;
+
+
+    const fullName =
+        `${user.first_name || ""} ${user.last_name || ""}`
+        .trim();
+
+
+    document
+        .getElementById("profileName")
+        .innerText =
+        fullName ||
+        user.username;
+
+
+    document
+        .getElementById("profileUsername")
+        .innerText =
+        `@${user.username}`;
+
+
+    document
+        .getElementById("avatarLetter")
+        .innerText =
+        (
+            user.first_name ||
+            user.username
+        )
+        .charAt(0)
+        .toUpperCase();
 
 }
 
 
-
 document
-.getElementById("profileForm")
-.addEventListener(
-    "submit",
-    async function(event){
+    .getElementById("profileForm")
+    .addEventListener(
+        "submit",
+        async function(event){
 
-        event.preventDefault();
+            event.preventDefault();
 
 
-        const response = await fetch(
+            const response =
+                await fetch(
 
-            "/api/users/profile/",
+                    "/api/users/profile/",
 
-            {
-                method:"PATCH",
+                    {
 
-                credentials:"include",
+                        method:"PATCH",
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                        credentials:"include",
 
-                body:JSON.stringify({
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
 
-                    first_name:
-                        document
-                        .getElementById("first_name")
-                        .value,
+                        body:JSON.stringify({
 
-                    last_name:
-                        document
-                        .getElementById("last_name")
-                        .value,
+                            first_name:
+                                document
+                                .getElementById(
+                                    "first_name"
+                                )
+                                .value,
 
-                    email:
-                        document
-                        .getElementById("email")
-                        .value
+                            last_name:
+                                document
+                                .getElementById(
+                                    "last_name"
+                                )
+                                .value,
 
-                })
+                            email:
+                                document
+                                .getElementById(
+                                    "email"
+                                )
+                                .value
+
+                        })
+
+                    }
+
+                );
+
+
+            const message =
+                document
+                .getElementById("message");
+
+
+            if(response.ok){
+
+                message
+                    .className =
+                    "profile-message text-success";
+
+
+                message
+                    .innerText =
+                    "Profile updated successfully.";
+
+
+                loadProfile();
 
             }
 
-        );
+            else{
+
+                const data =
+                    await response.json();
 
 
-        const message =
-            document
-            .getElementById("message");
+                message
+                    .className =
+                    "profile-message text-danger";
 
 
-        if(response.ok){
+                message
+                    .innerText =
+                    data.detail ||
+                    "Unable to update profile.";
 
-            message
-            .className =
-            "mt-3 text-success";
-
-
-            message.innerText =
-            "Profile updated successfully.";
-
-        }
-
-        else{
-
-            const data =
-                await response.json();
-
-
-            message
-            .className =
-            "mt-3 text-danger";
-
-
-            message.innerText =
-                JSON.stringify(data);
+            }
 
         }
-
-    }
-);
+    );
 
 
 loadProfile();
