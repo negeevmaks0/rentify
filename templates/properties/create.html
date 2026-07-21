@@ -9,98 +9,147 @@ Create property
 {% block content %}
 
 
-<h2>
-Create property
-</h2>
+<div class="property-create-page">
+    <div class="property-create-card">
+        <div class="property-create-header">
+            <div class="property-create-icon">
+                🏠
+            </div>
 
+            <h1>
+                Create property
+            </h1>
 
-<form id="propertyForm">
+            <p>
+                Add your property and start receiving bookings
+            </p>
+        </div>
 
+        <form id="propertyForm">
+            <div class="property-create-grid">
+                <div class="property-create-fields">
+                    <div class="create-field">
+                        <label>
+                            Title
+                        </label>
 
-    <input 
-        class="form-control mb-3"
-        id="title"
-        placeholder="Title"
-        required>
+                        <input
+                            class="form-control"
+                            id="title"
+                            placeholder="Modern apartment"
+                            required>
+                    </div>
 
+                    <div class="create-field">
+                        <label>Description</label>
 
-    <textarea
-        class="form-control mb-3"
-        id="description"
-        placeholder="Description">
-    </textarea>
+                        <textarea
+                            class="form-control"
+                            id="description"
+                            rows="5"
+                            placeholder="Describe your property..."></textarea>
+                    </div>
 
+                    <div class="create-field">
+                        <label>
+                            Location
+                        </label>
 
-    <input
-        class="form-control mb-3"
-        id="location"
-        placeholder="Location"
-        required>
+                        <input
+                            class="form-control"
+                            id="location"
+                            placeholder="Mainz, Germany"
+                            required>
+                    </div>
 
+                    <div class="create-row">
+                        <div class="create-field">
+                            <label>
+                                Price / night
+                            </label>
 
-    <input
-        class="form-control mb-3"
-        id="price"
-        type="number"
-        step="0.01"
-        placeholder="Price per night (€)"
-        required>
+                            <input
+                                class="form-control"
+                                id="price"
+                                type="number"
+                                step="0.01"
+                                placeholder="69"
+                                required>
+                        </div>
 
+                        <div class="create-field">
 
-    <input
-        class="form-control mb-3"
-        id="rooms"
-        type="number"
-        placeholder="Rooms"
-        required>
+                            <label>
+                                Rooms
+                            </label>
 
+                            <input
+                                class="form-control"
+                                id="rooms"
+                                type="number"
+                                placeholder="2"
+                                required>
+                        </div>
+                    </div>
 
-    <select
-        class="form-select mb-3"
-        id="type">
+                    <div class="create-field">
+                        <label>
+                            Property type
+                        </label>
 
+                        <select
+                            class="form-select"
+                            id="type">
 
-        <option value="apartment">
-            Apartment
-        </option>
+                            <option value="apartment">
+                                Apartment
+                            </option>
 
-        <option value="house">
-            House
-        </option>
+                            <option value="house">
+                                House
+                            </option>
 
-        <option value="studio">
-            Studio
-        </option>
+                            <option value="studio">
+                                Studio
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="property-upload-box">
+                    <label class="upload-area">
+                        <div class="upload-icon">
+                            📷
+                        </div>
 
-    </select>
+                        <h4>
+                            Upload images
+                        </h4>
 
-    <div class="mb-3">
+                        <p>
+                            Select multiple photos
+                        </p>
 
-        <label>
-            Images
-        </label>
+                        <input
+                            type="file"
+                            id="images"
+                            multiple
+                            accept="image/*">
+                    </label>
+                </div>
+            </div>
 
-        <input
-            type="file"
-            id="images"
-            multiple
-            class="form-control mb-3"
-            accept="image/*">
+            <button
+                class="btn btn-primary create-property-button">
+                Create property
+            </button>
+        </form>
 
+        <div
+            id="error"
+            class="create-error">
+        </div>
     </div>
-
-
-    <button class="btn btn-primary">
-        Create
-    </button>
-
-
-</form>
-
-
-<div id="error"
-    class="text-danger mt-3">
 </div>
 
 

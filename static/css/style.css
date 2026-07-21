@@ -1288,3 +1288,157 @@ a{
     font-size: 0.75rem;
     color: #94a3b8;
 }
+
+.property-create-page{
+    min-height:calc(100vh - 150px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px 0 80px;
+}
+
+.property-create-card{
+    width:100%;
+    max-width:1000px;
+    padding:45px;
+    border-radius:24px;
+    background:#1e293b;
+    border:1px solid #334155;
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.25);
+}
+
+.property-create-header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.property-create-icon{
+    width:70px;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:20px;
+    border-radius:20px;
+    background:#2563eb;
+    font-size:34px;
+}
+
+.property-create-header h1{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.property-create-header p{
+    color:#94a3b8;
+}
+
+.property-create-grid{
+    display:grid;
+    grid-template-columns:
+    1fr 350px;
+    gap:35px;
+}
+
+.create-field{
+    margin-bottom:20px;
+}
+
+.create-field label{
+    display:block;
+    margin-bottom:8px;
+    color:#cbd5e1;
+    font-size:14px;
+    font-weight:500;
+}
+
+.create-field .form-control,
+.create-field .form-select{
+    min-height:50px;
+    border-radius:12px;
+}
+
+.create-row{
+    display:grid;
+    grid-template-columns:
+    repeat(2,1fr);
+    gap:20px;
+}
+
+.property-upload-box{
+    display:flex;
+}
+
+.upload-area{
+    width:100%;
+    min-height:350px;
+    border-radius:20px;
+    border:2px dashed #475569;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.upload-area:hover{
+    border-color:#60a5fa;
+    background:#172554;
+}
+
+.upload-area input{
+    display:none;
+}
+
+.upload-icon{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.upload-area h4{
+    margin-bottom:8px;
+}
+
+.upload-area p{
+    color:#94a3b8;
+}
+
+.create-property-button{
+    width:100%;
+    min-height:55px;
+    margin-top:35px;
+    border-radius:14px;
+    font-size:17px;
+    font-weight:600;
+}
+
+.create-error{
+    margin-top:20px;
+    text-align:center;
+    color:#f87171;
+}
+
+@media(max-width:900px){
+    .property-create-grid{
+        grid-template-columns:1fr;
+    }
+
+    .property-upload-box{
+        min-height:250px;
+    }
+}
+
+@media(max-width:576px){
+    .property-create-card{
+        padding:25px;
+    }
+
+    .create-row{
+        grid-template-columns:1fr;
+    }
+}
