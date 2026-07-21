@@ -7,6 +7,12 @@ async function loadBookings(filter = ""){
     const container =
         document.getElementById("bookings");
 
+    const historySection =
+        document.getElementById("historySection");
+
+    const historyContainer =
+        document.getElementById("historyBookings");
+
     const emptyState =
         document.getElementById("emptyState");
 
@@ -15,6 +21,14 @@ async function loadBookings(filter = ""){
 
 
     currentFilter = filter;
+
+
+    historySection
+        .classList
+        .add("d-none");
+
+
+    historyContainer.innerHTML = "";
 
 
     container.innerHTML = `
@@ -54,6 +68,84 @@ async function loadBookings(filter = ""){
             await response.json();
 
 
+        if(filter === ""){
+
+            const activeBookings =
+                bookings.filter(
+                    booking =>
+                    booking.status === "pending"
+                    ||
+                    booking.status === "approved"
+                );
+
+
+            const historyBookings =
+                bookings.filter(
+                    booking =>
+                    booking.status === "rejected"
+                    ||
+                    booking.status === "cancelled"
+                );
+
+
+            count.innerText =
+                `${bookings.length} bookings`;
+
+
+            container.innerHTML = "";
+
+
+            if(activeBookings.length){
+
+                renderBookings(
+                    activeBookings,
+                    container
+                );
+
+            }
+
+
+            if(historyBookings.length){
+
+                historySection
+                    .classList
+                    .remove("d-none");
+
+
+                renderBookings(
+                    historyBookings,
+                    historyContainer
+                );
+
+            }
+
+
+            if(
+                !activeBookings.length
+                &&
+                !historyBookings.length
+            ){
+
+                emptyState
+                    .classList
+                    .remove("d-none");
+
+            }
+
+            else{
+
+                emptyState
+                    .classList
+                    .add("d-none");
+
+            }
+
+
+            return;
+
+        }
+
+
         count.innerText =
             `${bookings.length} bookings`;
 
@@ -62,9 +154,11 @@ async function loadBookings(filter = ""){
 
             container.innerHTML = "";
 
+
             emptyState
                 .classList
                 .remove("d-none");
+
 
             return;
 
@@ -76,7 +170,10 @@ async function loadBookings(filter = ""){
             .add("d-none");
 
 
-        renderBookings(bookings);
+        renderBookings(
+            bookings,
+            container
+        );
 
 
     }catch(error){
@@ -110,14 +207,10 @@ async function loadBookings(filter = ""){
 
 
 
-function renderBookings(bookings){
-
-    const container =
-        document.getElementById("bookings");
-
-
-    container.innerHTML = "";
-
+function renderBookings(
+    bookings,
+    container
+){
 
     bookings.forEach(booking => {
 

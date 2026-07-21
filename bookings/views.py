@@ -34,30 +34,47 @@ class BookingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        booking_filter = self.request.query_params.get("filter")
+        today = timezone.now().date()
 
         if user.role == 'tenant':
             queryset = Booking.objects.filter(tenant=user)
 
-            booking_filter = self.request.query_params.get("filter")
-
             if booking_filter == "active":
                 queryset = queryset.filter(
-                    end_date__gte=timezone.now().date(),
+                    end_date__gte=today,
                     status__in=["pending", "approved"]
                 )
 
             elif booking_filter == "completed":
-                queryset = queryset.filter(end_date__lt=timezone.now().date())
+                queryset = queryset.filter(end_date__lt=today)
 
             elif booking_filter == "cancelled":
                 queryset = queryset.filter(status="cancelled")
+
+            elif booking_filter == "rejected":
+                queryset = queryset.filter(status="rejected")
+
+            elif booking_filter == "pending":
+                queryset = queryset.filter(status="pending")
+
+            elif booking_filter == "approved":
+                queryset = queryset.filter(status="approved")
+
+            elif booking_filter in [None, ""]:
+                queryset = queryset.filter(
+                    status__in=[
+                        "pending",
+                        "approved",
+                        "rejected",
+                        "cancelled"
+                    ]
+                )
 
             return queryset
 
         if user.role == 'landlord':
             queryset = Booking.objects.filter(property__owner=user)
-
-            booking_filter = self.request.query_params.get("filter")
 
             if booking_filter == "pending":
                 queryset = queryset.filter(status="pending")
