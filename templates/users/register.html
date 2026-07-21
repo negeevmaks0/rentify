@@ -7,81 +7,143 @@
 Register
 {% endblock %}
 
+
 {% block content %}
 
-<div class="row justify-content-center">
+<section class="login-section">
+<div class="login-card register-card">
+    <div class="login-header">
+        <div class="login-avatar">
+            🏠
+        </div>
 
-    <div class="col-md-6">
+        <h1>
+            Create account.
+        </h1>
 
-        <div class="card p-4">
+        <p>
+            Join Rentify and find your perfect place.
+        </p>
+    </div>
 
-            <h2 class="text-center mb-4">
-                Create account
-            </h2>
+    <form id="registerForm">
+        <div class="login-field">
+            <label for="username">
+                Username
+            </label>
 
-            <form id="registerForm">
-
-                <div class="mb-3">
-                    <label>Username</label>
-                    <input class="form-control" id="username" required>
-                </div>
-
-                <div class="mb-3">
-                    <label>First name</label>
-                    <input class="form-control" id="first_name">
-                </div>
-
-                <div class="mb-3">
-                    <label>Last name</label>
-                    <input class="form-control" id="last_name">
-                </div>
-
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input class="form-control" id="email" type="email" required>
-                </div>
-
-                <div class="mb-3">
-                    <label>Password</label>
-                    <input class="form-control" id="password" type="password" required>
-                </div>
-
-                <div class="mb-4">
-                    <label>Role</label>
-
-                    <select id="role" class="form-select">
-
-                        <option value="tenant">
-                            Tenant
-                        </option>
-
-                        <option value="landlord">
-                            Landlord
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <button class="btn btn-primary w-100">
-                    Register
-                </button>
-
-            </form>
-
-            <div
-                class="text-danger mt-3"
-                id="error">
-            </div>
+            <input
+                type="text"
+                id="username"
+                placeholder="Your username"
+                autocomplete="username"
+                required>
 
         </div>
 
+        <div class="register-name-row">
+            <div class="login-field">
+                <label for="first_name">
+                    First name
+                </label>
+
+                <input
+                    type="text"
+                    id="first_name"
+                    placeholder="John"
+                    autocomplete="given-name">
+            </div>
+
+            <div class="login-field">
+                <label for="last_name">
+                    Last name
+                </label>
+
+                <input
+                    type="text"
+                    id="last_name"
+                    placeholder="Smith"
+                    autocomplete="family-name">
+            </div>
+        </div>
+
+        <div class="login-field">
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="example@gmail.com"
+                autocomplete="email"
+                required>
+        </div>
+
+        <div class="login-field">
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create password"
+                autocomplete="new-password"
+                required>
+        </div>
+
+        <div class="login-field">
+            <label for="role">
+                Account type
+            </label>
+
+            <select
+                id="role"
+                class="login-select">
+
+                <option value="tenant">
+                    Tenant
+                </option>
+
+                <option value="landlord">
+                    Landlord
+                </option>
+            </select>
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary login-button">
+            Create account
+        </button>
+    </form>
+
+    <div
+        id="message"
+        class="login-error">
     </div>
 
+    <div class="login-footer">
+        <span>
+            Already have an account?
+        </span>
+
+        <a href="/login/">
+            Login
+        </a>
+
+    </div>
 </div>
+</section>
+
 
 {% endblock %}
 
+
+
 {% block scripts %}
+
 <script src="{% static 'js/register.js' %}"></script>
+
 {% endblock %}
