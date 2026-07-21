@@ -44,6 +44,10 @@ class RegisterPageView(TemplateView):
     template_name = 'users/register.html'
 
 
+class ProfilePageView(TemplateView):
+    template_name = "users/profile.html"
+
+
 class RegisterView(APIView):
     authentication_classes = []
     permission_classes = []

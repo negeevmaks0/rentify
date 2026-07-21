@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             document.getElementById("error").innerText =
-                data.detail || "Wrong username or password.";
+                data.detail || "Wrong email or password.";
         }
 
     });
