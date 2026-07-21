@@ -30,6 +30,15 @@ class PropertyListPageView(TemplateView):
 
 class PropertyCabinetPageView(TemplateView):
     template_name = "properties/cabinet.html"
+    login_url = "/login/"
+
+    def test_func(self):
+        user = self.request.user
+
+        if user.role != "landlord":
+            return False
+
+        return Property.objects.filter(owner=user).exists()
 
 
 class PropertyViewSet(viewsets.ModelViewSet):

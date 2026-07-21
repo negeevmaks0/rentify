@@ -49,6 +49,42 @@ Landlord Cabinet
 
 <script>
 
+async function checkLandlordAccess(){
+
+    const response = await fetch(
+        "/api/users/profile/",
+        {
+            credentials:"include"
+        }
+    );
+
+
+    if(!response.ok){
+
+        window.location = "/";
+
+        return;
+
+    }
+
+
+    const user = await response.json();
+
+
+    if(user.role !== "landlord"){
+
+        window.location = "/";
+
+        return;
+
+    }
+
+
+    loadProperties();
+    loadBookings();
+
+}
+
 
 async function loadProperties(){
 
@@ -72,29 +108,23 @@ async function loadProperties(){
 
     properties.forEach(property=>{
 
-
         container.innerHTML += `
 
         <div class="col-md-6 col-lg-4">
 
-
             <div class="property-card p-3">
-
 
                 <h3>
                     ${property.title}
                 </h3>
 
-
                 <p>
                     ${property.location}
                 </p>
 
-
                 <p>
                     ${property.price_per_night} €/night
                 </p>
-
 
                 <span class="badge bg-${
                     property.is_active
@@ -110,39 +140,30 @@ async function loadProperties(){
 
                 </span>
 
-
                 <button
                 class="btn btn-primary mt-3"
                 onclick="toggleProperty(${property.id})">
 
-
-                ${
-                property.is_active
-                ? "Deactivate"
-                : "Activate"
-                }
-
+                    ${
+                    property.is_active
+                    ? "Deactivate"
+                    : "Activate"
+                    }
 
                 </button>
 
-
             </div>
-
 
         </div>
 
         `;
 
-
     });
-
 
 }
 
 
-
 async function toggleProperty(id){
-
 
     const response = await fetch(
 
@@ -162,13 +183,10 @@ async function toggleProperty(id){
 
     }
 
-
 }
 
 
-
 async function loadBookings(){
-
 
     const response = await fetch(
 
@@ -192,9 +210,7 @@ async function loadBookings(){
     container.innerHTML="";
 
 
-
     bookings.forEach(booking=>{
-
 
         container.innerHTML += `
 
@@ -243,7 +259,7 @@ async function loadBookings(){
                 class="btn btn-success"
                 onclick="approveBooking(${booking.id})">
 
-                Approve
+                    Approve
 
                 </button>
 
@@ -252,7 +268,7 @@ async function loadBookings(){
                 class="btn btn-danger"
                 onclick="rejectBooking(${booking.id})">
 
-                Reject
+                    Reject
 
                 </button>
 
@@ -264,25 +280,18 @@ async function loadBookings(){
 
                 }
 
-
             </div>
-
 
         </div>
 
-
         `;
 
-
     });
-
 
 }
 
 
-
 async function approveBooking(id){
-
 
     const response = await fetch(
 
@@ -311,13 +320,10 @@ async function approveBooking(id){
 
     }
 
-
 }
 
 
-
 async function rejectBooking(id){
-
 
     const response = await fetch(
 
@@ -346,16 +352,11 @@ async function rejectBooking(id){
 
     }
 
-
 }
 
 
-
-loadProperties();
-loadBookings();
-
+checkLandlordAccess();
 
 </script>
-
 
 {% endblock %}
