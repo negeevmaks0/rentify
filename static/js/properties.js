@@ -1,99 +1,204 @@
+let allProperties = [];
+
+
 async function loadProperties(){
 
-    const container = document.getElementById("properties");
+    const container =
+        document.getElementById("properties");
+
+
+    try{
+
+        const response = await fetch(
+            "/api/properties/",
+            {
+                credentials:"include"
+            }
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Failed to load properties."
+            );
+
+        }
+
+
+        allProperties =
+            await response.json();
+
+
+        renderProperties(
+            allProperties
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+            <div class="col-12">
+
+                <div class="empty-state">
+
+                    <h4>
+                        Unable to load properties
+                    </h4>
+
+                    <p>
+                        Please try again later.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+function renderProperties(properties){
+
+    const container =
+        document.getElementById("properties");
+
+
+    const emptyState =
+        document.getElementById("emptyState");
+
+
+    const count =
+        document.getElementById("propertyCount");
+
 
     container.innerHTML = "";
 
 
-    const response = await fetch(
-        "/api/properties/",
-        {
-            credentials:"include"
-        }
-    );
+    count.innerText =
+        `${properties.length} properties`;
 
 
-    const properties = await response.json();
+    if(!properties.length){
 
+        emptyState
+            .classList
+            .remove("d-none");
+
+        return;
+
+    }
+
+
+    emptyState
+        .classList
+        .add("d-none");
 
 
     properties.forEach(property => {
 
 
-        const image = property.main_image
-            ?
+        const image =
             property.main_image
-            :
+            ||
             "/static/images/no-image.jpg";
-
 
 
         container.innerHTML += `
 
-
-        <div class="col-md-4">
-
-
-            <div class="card property-card h-100">
+            <div class="col-md-6 col-xl-4">
 
 
-                <img 
-                    src="${image}"
-                    class="card-img-top property-image"
-                    alt="${property.title}"
-                >
+                <div class="property-card
+                            property-list-card
+                            h-100">
 
 
+                    <div class="property-image-wrapper">
 
-                <div class="card-body">
-
-
-                    <h5 class="card-title">
-                        ${property.title}
-                    </h5>
-
+                        <img
+                            src="${image}"
+                            class="property-image"
+                            alt="${property.title}">
 
 
-                    <p class="text-muted">
-                        ${property.location}
-                    </p>
+                        <span
+                            class="property-type-badge
+                                   property-card-badge">
+
+                            ${property.property_type}
+
+                        </span>
+
+                    </div>
 
 
-
-                    <p>
-                        ${property.description}
-                    </p>
+                    <div class="card-body">
 
 
+                        <h5 class="card-title">
 
-                    <p>
-                        Rooms:
-                        ${property.room_count}
-                    </p>
+                            ${property.title}
 
-
-
-                    <p>
-                        Type:
-                        ${property.property_type}
-                    </p>
+                        </h5>
 
 
+                        <p class="property-location">
 
-                    <h5>
-                        ${property.price_per_night} €
-                        <small>
-                            / night
-                        </small>
-                    </h5>
+                            📍 ${property.location}
+
+                        </p>
 
 
+                        <p class="property-description">
 
-                    <button 
-                        class="btn btn-primary w-100 view-details"
-                        data-id="${property.id}">
-                        View details
-                    </button>
+                            ${property.description}
+
+                        </p>
+
+
+                        <div class="property-card-footer">
+
+
+                            <div>
+
+                                <span
+                                    class="property-price">
+
+                                    ${property.price_per_night} €
+
+                                </span>
+
+                                <small
+                                    class="text-secondary">
+
+                                    / night
+
+                                </small>
+
+                            </div>
+
+
+                            <button
+                                class="btn btn-primary
+                                       view-details"
+                                data-id="${property.id}">
+
+                                View details
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
 
 
                 </div>
@@ -101,168 +206,277 @@ async function loadProperties(){
 
             </div>
 
+        `;
 
-        </div>
+    });
 
+
+    document
+        .querySelectorAll(".view-details")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const id =
+                        button.dataset.id;
+
+
+                    const property =
+                        allProperties.find(
+                            property =>
+                            property.id == id
+                        );
+
+
+                    openPropertyModal(
+                        property
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+function openPropertyModal(property){
+
+    const modal =
+        document.getElementById(
+            "propertyModal"
+        );
+
+
+    const content =
+        document.getElementById(
+            "modalContent"
+        );
+
+
+    const images =
+        property.images.length
+
+        ?
+
+        `
+
+            <div
+                class="property-modal-gallery">
+
+                ${property.images.map(
+                    image => `
+
+                    <img
+                        src="${image.image}"
+                        class="property-modal-image">
+
+                `
+                ).join("")}
+
+            </div>
+
+        `
+
+        :
+
+        `
+
+            <img
+                src="/static/images/no-image.jpg"
+                class="property-modal-main-image">
 
         `;
 
 
-    });
+    content.innerHTML = `
 
-    document
-    .querySelectorAll(".view-details")
-    .forEach(button => {
+        ${images}
 
 
-        button.addEventListener(
-            "click",
-            () => {
+        <div
+            class="property-modal-details">
 
 
-                const id = button.dataset.id;
+            <span
+                class="property-type-badge">
+
+                ${property.property_type}
+
+            </span>
 
 
-                const property =
-                properties.find(
-                    p => p.id == id
-                );
+            <h2>
+
+                ${property.title}
+
+            </h2>
 
 
-                openPropertyModal(property);
+            <p
+                class="property-location">
+
+                📍 ${property.location}
+
+            </p>
 
 
-            }
-        );
+            <p
+                class="property-modal-description">
+
+                ${property.description}
+
+            </p>
 
 
-    });
+            <div
+                class="property-details-grid">
 
 
-}
+                <div>
 
-function openPropertyModal(property){
+                    <span>
+                        Rooms
+                    </span>
 
+                    <strong>
+                        ${property.room_count}
+                    </strong>
 
-const modal =
-document.getElementById("propertyModal");
-
-
-const content =
-document.getElementById("modalContent");
-
-
-
-content.innerHTML = `
-
-<h2>
-${property.title}
-</h2>
+                </div>
 
 
-${
-property.images.length
+                <div>
 
-?
+                    <span>
+                        Price
+                    </span>
 
-`
-<div class="row g-2">
+                    <strong>
+                        ${property.price_per_night} €
+                        <small>/ night</small>
+                    </strong>
 
-${property.images.map(
-img =>
-
-`
-<div class="col-4">
-
-<img 
-src="${img.image}"
-class="img-fluid rounded">
-
-</div>
-
-`
-
-).join("")}
-
-</div>
-`
-
-:
-
-`
-<img 
-src="/static/images/no-image.jpg"
-class="img-fluid rounded mb-3">
-`
-
-}
+                </div>
 
 
-
-<p>
-${property.description}
-</p>
+            </div>
 
 
-<p>
-Location:
-${property.location}
-</p>
+            <button
+                class="btn btn-success
+                       btn-lg
+                       w-100"
+                onclick="goBooking(${property.id})">
+
+                Request booking
+
+            </button>
 
 
-<p>
-Rooms:
-${property.room_count}
-</p>
+        </div>
+
+    `;
 
 
-<h3>
-${property.price_per_night} € / night
-</h3>
-
-
-<button 
-class="btn btn-success"
-onclick="goBooking(${property.id})">
-
-Booking
-
-</button>
-
-
-`;
-
-
-
-modal.style.display="flex";
-
+    modal.style.display =
+        "flex";
 
 }
-
 
 
 function closePropertyModal(){
 
-document.getElementById(
-"propertyModal"
-).style.display="none";
+    document
+        .getElementById(
+            "propertyModal"
+        )
+        .style.display =
+        "none";
 
 }
 
 
+document
+    .getElementById(
+        "closeModal"
+    )
+    .onclick =
+    closePropertyModal;
+
 
 document
-.getElementById("closeModal")
-.onclick =
-closePropertyModal;
+    .getElementById(
+        "propertySearch"
+    )
+    .addEventListener(
+        "input",
+        function(){
 
+            const search =
+                this.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const filtered =
+                allProperties.filter(
+                    property =>
+
+                        property.title
+                            .toLowerCase()
+                            .includes(search)
+
+                        ||
+
+                        property.location
+                            .toLowerCase()
+                            .includes(search)
+
+                        ||
+
+                        property.description
+                            .toLowerCase()
+                            .includes(search)
+                );
+
+
+            renderProperties(
+                filtered
+            );
+
+        }
+    );
 
 
 function goBooking(id){
 
-window.location =
-`/bookings/create/${id}/`;
+    window.location =
+        `/bookings/create/${id}/`;
 
 }
+
+
+window.addEventListener(
+    "click",
+    function(event){
+
+        const modal =
+            document.getElementById(
+                "propertyModal"
+            );
+
+
+        if(event.target === modal){
+
+            closePropertyModal();
+
+        }
+
+    }
+);
+
 
 loadProperties();
