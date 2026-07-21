@@ -15,6 +15,8 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    has_review = serializers.SerializerMethodField()
+
     tenant = serializers.PrimaryKeyRelatedField(
         read_only=True
     )
@@ -39,6 +41,9 @@ class BookingSerializer(serializers.ModelSerializer):
 
     nights = serializers.SerializerMethodField()
     can_manage = serializers.SerializerMethodField()
+
+    def get_has_review(self, obj):
+        return hasattr(obj, "review")
 
 
     def get_can_manage(self, obj):
@@ -135,7 +140,8 @@ class BookingSerializer(serializers.ModelSerializer):
             'booking_date',
             'cancellation_deadline',
             'status',
-            'booking_price'
+            'booking_price',
+            'has_review',
         )
 
         read_only_fields = (

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Leave review
+{% endblock %}
+
+
+{% block content %}
+
+<div class="card p-4">
+
+    <h2>
+        Leave review
+    </h2>
+
+
+    <label class="mt-3">
+        Rating
+    </label>
+
+    <select
+        id="rating"
+        class="form-control">
+
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★</option>
+        <option value="3">★★★</option>
+        <option value="2">★★</option>
+        <option value="1">★</option>
+
+    </select>
+
+
+    <label class="mt-3">
+        Comment
+    </label>
+
+
+    <textarea
+        id="comment"
+        class="form-control"
+        rows="5"></textarea>
+
+
+    <button
+        onclick="createReview()"
+        class="btn btn-success mt-3">
+
+        Submit review
+
+    </button>
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script src="/static/js/reviews_create.js"></script>
+
+{% endblock %}

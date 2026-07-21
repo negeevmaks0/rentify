@@ -234,7 +234,9 @@ function renderBookings(
             booking.status === "pending";
 
         const canReview =
-            booking.status === "completed";
+            booking.status === "completed"
+            &&
+            !booking.has_review;
 
 
         container.innerHTML += `
