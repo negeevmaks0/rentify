@@ -1,52 +1,638 @@
 {% extends "base.html" %}
 
 {% block title %}
-Landlord Cabinet
+Landlord Dashboard
 {% endblock %}
 
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>
-        My Cabinet
-    </h1>
+<style>
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.dashboard-title h1{
+    margin:0;
+    font-size:42px;
+    font-weight:700;
+}
+
+.dashboard-title p{
+    margin:8px 0 0;
+    color:#94a3b8;
+}
+
+
+/* STATISTICS */
+
+.dashboard-stats{
+    display:grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:20px;
+    margin-bottom:45px;
+}
+
+.stat-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1e293b,
+            #16213e
+        );
+
+    border:1px solid #334155;
+}
+
+.stat-icon{
+    width:55px;
+    height:55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:#2563eb;
+
+    font-size:25px;
+}
+
+.stat-info span{
+    display:block;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+    margin-bottom:5px;
+}
+
+.stat-info strong{
+    font-size:28px;
+}
+
+
+/* SECTIONS */
+
+.dashboard-section{
+    margin-bottom:50px;
+}
+
+.dashboard-section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:22px;
+}
+
+.dashboard-section-header h2{
+    margin:0;
+
+    font-size:28px;
+}
+
+.dashboard-section-header p{
+    margin:5px 0 0;
+
+    color:#94a3b8;
+}
+
+
+/* PROPERTY CARDS */
+
+.dashboard-property-card{
+    height:100%;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:#071a33;
+
+    border:1px solid #1e3a5f;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.dashboard-property-card:hover{
+    transform:translateY(-5px);
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.3);
+}
+
+.property-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    gap:15px;
+
+    margin-bottom:18px;
+}
+
+.property-card-top h3{
+    margin:0;
+
+    font-size:21px;
+
+    line-height:1.3;
+}
+
+.property-location{
+    margin-top:8px;
+
+    color:#94a3b8;
+
+    font-size:14px;
+}
+
+.property-price{
+    margin:20px 0;
+
+    font-size:24px;
+    font-weight:700;
+}
+
+.property-price span{
+    color:#94a3b8;
+
+    font-size:14px;
+    font-weight:400;
+}
+
+.property-actions{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:20px;
+}
+
+.property-actions .btn{
+    flex:1;
+
+    min-width:100px;
+}
+
+
+/* STATUS */
+
+.dashboard-status{
+    padding:6px 11px;
+
+    border-radius:10px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+.dashboard-status.active{
+    background:#14532d;
+
+    color:#86efac;
+}
+
+.dashboard-status.inactive{
+    background:#334155;
+
+    color:#cbd5e1;
+}
+
+
+/* BOOKING CARDS */
+
+.dashboard-booking-card{
+    height:100%;
+
+    padding:24px;
+
+    border-radius:18px;
+
+    background:#071a33;
+
+    border:1px solid #1e3a5f;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.dashboard-booking-card:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.3);
+}
+
+.booking-card-header{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:flex-start;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.booking-card-header h3{
+    margin:0;
+
+    font-size:21px;
+}
+
+.booking-tenant{
+    margin-top:7px;
+
+    color:#94a3b8;
+
+    font-size:14px;
+}
+
+.booking-status{
+    padding:6px 12px;
+
+    border-radius:10px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    text-transform:capitalize;
+}
+
+.booking-status.pending{
+    background:#78350f;
+    color:#fcd34d;
+}
+
+.booking-status.approved{
+    background:#14532d;
+    color:#86efac;
+}
+
+.booking-status.rejected{
+    background:#7f1d1d;
+    color:#fca5a5;
+}
+
+.booking-status.cancelled{
+    background:#334155;
+    color:#cbd5e1;
+}
+
+.booking-dates{
+    display:grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px;
+
+    margin-bottom:20px;
+
+    border-radius:14px;
+
+    background:#0f172a;
+}
+
+.booking-date span{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#94a3b8;
+
+    font-size:12px;
+}
+
+.booking-date strong{
+    font-size:14px;
+}
+
+.booking-arrow{
+    color:#60a5fa;
+
+    font-size:20px;
+}
+
+.booking-info{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
+}
+
+.booking-info-item{
+    padding:14px;
+
+    border-radius:12px;
+
+    background:#1e293b;
+}
+
+.booking-info-item span{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#94a3b8;
+
+    font-size:12px;
+}
+
+.booking-info-item strong{
+    font-size:18px;
+}
+
+.booking-actions{
+    display:flex;
+
+    gap:10px;
+}
+
+.booking-actions .btn{
+    flex:1;
+}
+
+
+/* EMPTY STATE */
+
+.dashboard-empty{
+    padding:45px 25px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    background:#1e293b;
+
+    border:1px dashed #475569;
+}
+
+.dashboard-empty-icon{
+    margin-bottom:15px;
+
+    font-size:40px;
+}
+
+.dashboard-empty h3{
+    margin-bottom:8px;
+}
+
+.dashboard-empty p{
+    margin-bottom:20px;
+
+    color:#94a3b8;
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .dashboard-header{
+        align-items:flex-start;
+
+        flex-direction:column;
+
+        gap:20px;
+    }
+
+    .dashboard-header .btn{
+        width:100%;
+    }
+
+    .dashboard-title h1{
+        font-size:34px;
+    }
+
+    .dashboard-stats{
+        grid-template-columns:
+            1fr;
+    }
+
+    .dashboard-section-header{
+        align-items:flex-start;
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .booking-dates{
+        grid-template-columns:
+            1fr;
+    }
+
+    .booking-arrow{
+        display:none;
+    }
+
+    .booking-actions{
+        flex-direction:column;
+    }
+
+    .property-actions{
+        flex-direction:column;
+    }
+
+    .property-actions .btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+
+<div class="dashboard-header">
+
+    <div class="dashboard-title">
+
+        <h1>Landlord Dashboard</h1>
+
+        <p>
+            Manage your properties and booking requests.
+        </p>
+
+    </div>
+
 
     <a
         href="/properties/create/"
         class="btn btn-primary">
 
-        Create property
+        + Create Property
 
     </a>
+
 </div>
 
 
-<div class="mb-5">
+<!-- STATISTICS -->
 
-    <h2 class="mb-3">
-        My Properties
-    </h2>
+<div class="dashboard-stats">
 
-    <div id="properties"
-         class="row g-4">
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🏠
+        </div>
+
+        <div class="stat-info">
+
+            <span>
+                My Properties
+            </span>
+
+            <strong id="property-count">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📅
+        </div>
+
+        <div class="stat-info">
+
+            <span>
+                Booking Requests
+            </span>
+
+            <strong id="booking-count">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ⏳
+        </div>
+
+        <div class="stat-info">
+
+            <span>
+                Pending Requests
+            </span>
+
+            <strong id="pending-count">
+                0
+            </strong>
+
+        </div>
+
     </div>
 
 </div>
 
 
+<!-- PROPERTIES -->
 
-<div>
+<div class="dashboard-section">
 
-    <h2 class="mb-3">
-        Booking Requests
-    </h2>
+    <div class="dashboard-section-header">
 
+        <div>
 
-    <div id="bookings"
-         class="row g-4">
+            <h2>
+                My Properties
+            </h2>
+
+            <p>
+                Manage your rental properties.
+            </p>
+
+        </div>
+
     </div>
 
+
+    <div
+        id="properties"
+        class="row g-4">
+
+    </div>
+
+</div>
+
+
+<!-- BOOKINGS -->
+
+<div class="dashboard-section">
+
+    <div class="dashboard-section-header">
+
+        <div>
+
+            <h2>
+                Booking Requests
+            </h2>
+
+            <p>
+                Review and manage requests from tenants.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="bookings"
+        class="row g-4">
+
+    </div>
 
 </div>
 
@@ -54,10 +640,10 @@ Landlord Cabinet
 {% endblock %}
 
 
-
 {% block scripts %}
 
 <script>
+
 
 async function checkLandlordAccess(){
 
@@ -78,7 +664,8 @@ async function checkLandlordAccess(){
     }
 
 
-    const user = await response.json();
+    const user =
+        await response.json();
 
 
     if(user.role !== "landlord"){
@@ -91,18 +678,29 @@ async function checkLandlordAccess(){
 
 
     loadProperties();
+
     loadBookings();
 
 }
 
+
 async function deleteProperty(id){
-        const confirmed = confirm(
+
+    const confirmed =
+        confirm(
             "Are you sure you want to delete this property?"
         );
 
-        if(!confirmed){return;}
 
-        const response = await fetch(
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    const response =
+        await fetch(
             `/api/properties/${id}/`,
             {
                 method:"DELETE",
@@ -110,115 +708,205 @@ async function deleteProperty(id){
             }
         );
 
-        if(response.ok){
-            loadProperties();
-        }
-        else{
-            const error =
-                await response.json();
 
-            alert(
-                error.detail ||
-                "This property cannot be deleted."
-            );
-        }
+    if(response.ok){
+
+        loadProperties();
+
     }
+    else{
+
+        const error =
+            await response.json();
+
+
+        alert(
+            error.detail ||
+            "This property cannot be deleted."
+        );
+
+    }
+
+}
 
 
 async function loadProperties(){
-    const response = await fetch(
-        "/api/properties/",
-        {
-            credentials:"include"
-        }
-    );
+
+    const response =
+        await fetch(
+            "/api/properties/",
+            {
+                credentials:"include"
+            }
+        );
 
 
-    const properties = await response.json();
+    const properties =
+        await response.json();
 
 
     const container =
         document.getElementById("properties");
 
 
-    container.innerHTML="";
+    container.innerHTML = "";
 
 
-    properties.forEach(property=>{
+    document.getElementById(
+        "property-count"
+    ).textContent =
+        properties.length;
+
+
+    if(properties.length === 0){
+
+        container.innerHTML = `
+
+            <div class="col-12">
+
+                <div class="dashboard-empty">
+
+                    <div class="dashboard-empty-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        No properties yet
+                    </h3>
+
+                    <p>
+                        Create your first property and start renting it.
+                    </p>
+
+                    <a
+                        href="/properties/create/"
+                        class="btn btn-primary">
+
+                        Create Property
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    properties.forEach(property => {
 
         container.innerHTML += `
 
-        <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-xl-4">
 
-            <div class="property-card p-3">
+                <div class="dashboard-property-card">
 
-                <h3>
-                    ${property.title}
-                </h3>
+                    <div class="property-card-top">
 
-                <p>
-                    ${property.location}
-                </p>
+                        <div>
 
-                <p>
-                    ${property.price_per_night} €/night
-                </p>
+                            <h3>
+                                ${property.title}
+                            </h3>
 
-                <span class="badge bg-${
-                    property.is_active
-                    ? "success"
-                    : "secondary"
-                }">
+                            <div class="property-location">
 
-                    ${
-                    property.is_active
-                    ? "Active"
-                    : "Inactive"
-                    }
+                                📍
+                                ${property.location}
 
-                </span>
+                            </div>
 
-                <button
-                class="btn btn-primary mt-3"
-                onclick="toggleProperty(${property.id})">
+                        </div>
 
-                    ${
-                    property.is_active
-                    ? "Deactivate"
-                    : "Activate"
-                    }
 
-                </button>
+                        <span
+                            class="dashboard-status ${
+                                property.is_active
+                                ? "active"
+                                : "inactive"
+                            }">
 
-                <a
-                    href="/properties/edit/${property.id}/"
-                    class="btn btn-secondary mt-3">
-                    Edit
-                </a>
-                <button
-                    class="btn btn-danger mt-3"
-                    onclick="deleteProperty(${property.id})">
-                    Delete
-                </button>
+                            ${
+                                property.is_active
+                                ? "Active"
+                                : "Inactive"
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-price">
+
+                        ${property.price_per_night} €
+
+                        <span>
+                            / night
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-actions">
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="toggleProperty(${property.id})">
+
+                            ${
+                                property.is_active
+                                ? "Deactivate"
+                                : "Activate"
+                            }
+
+                        </button>
+
+
+                        <a
+                            href="/properties/edit/${property.id}/"
+                            class="btn btn-secondary">
+
+                            Edit
+
+                        </a>
+
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="deleteProperty(${property.id})">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
-        </div>
+
         `;
+
     });
+
 }
 
 
 async function toggleProperty(id){
 
-    const response = await fetch(
-
-        `/api/properties/${id}/toggle_active/`,
-
-        {
-            method:"PATCH",
-            credentials:"include"
-        }
-
-    );
+    const response =
+        await fetch(
+            `/api/properties/${id}/toggle_active/`,
+            {
+                method:"PATCH",
+                credentials:"include"
+            }
+        );
 
 
     if(response.ok){
@@ -232,15 +920,13 @@ async function toggleProperty(id){
 
 async function loadBookings(){
 
-    const response = await fetch(
-
-        "/api/bookings/",
-
-        {
-            credentials:"include"
-        }
-
-    );
+    const response =
+        await fetch(
+            "/api/bookings/",
+            {
+                credentials:"include"
+            }
+        );
 
 
     const bookings =
@@ -251,82 +937,209 @@ async function loadBookings(){
         document.getElementById("bookings");
 
 
-    container.innerHTML="";
+    container.innerHTML = "";
 
 
-    bookings.forEach(booking=>{
+    document.getElementById(
+        "booking-count"
+    ).textContent =
+        bookings.length;
 
-        container.innerHTML += `
 
-        <div class="col-md-6">
-
-            <div class="property-card p-3">
-
-                <h4>
-                    ${booking.property_detail.title}
-                </h4>
-
-                <p>
-                    Tenant:
-                    ${booking.tenant_username}
-                </p>
-
-                <p>
-                    ${booking.start_date}
-                    -
-                    ${booking.end_date}
-                </p>
-
-                <p>
-                    Nights:
-                    ${booking.nights}
-                </p>
-
-                <p>
-                    Price:
-                    ${booking.booking_price} €
-                </p>
-
-                <p>
-                    Status:
-                    ${booking.status}
-                </p>
-
-                ${
+    const pendingBookings =
+        bookings.filter(
+            booking =>
                 booking.status === "pending"
-
-                ?
-
-                `
-
-                <button
-                class="btn btn-success"
-                onclick="approveBooking(${booking.id})">
-
-                    Approve
-
-                </button>
+        );
 
 
-                <button
-                class="btn btn-danger"
-                onclick="rejectBooking(${booking.id})">
+    document.getElementById(
+        "pending-count"
+    ).textContent =
+        pendingBookings.length;
 
-                    Reject
 
-                </button>
+    if(bookings.length === 0){
 
-                `
+        container.innerHTML = `
 
-                :
+            <div class="col-12">
 
-                ""
+                <div class="dashboard-empty">
 
-                }
+                    <div class="dashboard-empty-icon">
+                        📅
+                    </div>
+
+                    <h3>
+                        No booking requests
+                    </h3>
+
+                    <p>
+                        New booking requests will appear here.
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
+        `;
+
+        return;
+
+    }
+
+
+    bookings.forEach(booking => {
+
+        container.innerHTML += `
+
+            <div class="col-md-6">
+
+                <div class="dashboard-booking-card">
+
+
+                    <div class="booking-card-header">
+
+                        <div>
+
+                            <h3>
+                                ${booking.property_detail.title}
+                            </h3>
+
+                            <div class="booking-tenant">
+
+                                👤
+                                ${booking.tenant_username}
+
+                            </div>
+
+                        </div>
+
+
+                        <span
+                            class="booking-status
+                            ${booking.status}">
+
+                            ${booking.status}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="booking-dates">
+
+                        <div class="booking-date">
+
+                            <span>
+                                Check-in
+                            </span>
+
+                            <strong>
+                                ${booking.start_date}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="booking-arrow">
+                            →
+                        </div>
+
+
+                        <div class="booking-date">
+
+                            <span>
+                                Check-out
+                            </span>
+
+                            <strong>
+                                ${booking.end_date}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-info">
+
+                        <div class="booking-info-item">
+
+                            <span>
+                                Nights
+                            </span>
+
+                            <strong>
+                                ${booking.nights}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="booking-info-item">
+
+                            <span>
+                                Total Price
+                            </span>
+
+                            <strong>
+                                ${booking.booking_price} €
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        booking.status === "pending"
+
+                        ?
+
+                        `
+
+                            <div class="booking-actions">
+
+                                <button
+                                    class="btn btn-success"
+                                    onclick="
+                                        approveBooking(
+                                            ${booking.id}
+                                        )
+                                    ">
+
+                                    Approve
+
+                                </button>
+
+
+                                <button
+                                    class="btn btn-danger"
+                                    onclick="
+                                        rejectBooking(
+                                            ${booking.id}
+                                        )
+                                    ">
+
+                                    Reject
+
+                                </button>
+
+                            </div>
+
+                        `
+
+                        :
+
+                        ""
+
+                    }
+
+                </div>
+
+            </div>
 
         `;
 
@@ -337,16 +1150,14 @@ async function loadBookings(){
 
 async function approveBooking(id){
 
-    const response = await fetch(
-
-        `/api/bookings/${id}/approve/`,
-
-        {
-            method:"PATCH",
-            credentials:"include"
-        }
-
-    );
+    const response =
+        await fetch(
+            `/api/bookings/${id}/approve/`,
+            {
+                method:"PATCH",
+                credentials:"include"
+            }
+        );
 
 
     if(response.ok){
@@ -369,16 +1180,14 @@ async function approveBooking(id){
 
 async function rejectBooking(id){
 
-    const response = await fetch(
-
-        `/api/bookings/${id}/reject/`,
-
-        {
-            method:"PATCH",
-            credentials:"include"
-        }
-
-    );
+    const response =
+        await fetch(
+            `/api/bookings/${id}/reject/`,
+            {
+                method:"PATCH",
+                credentials:"include"
+            }
+        );
 
 
     if(response.ok){
@@ -400,6 +1209,7 @@ async function rejectBooking(id){
 
 
 checkLandlordAccess();
+
 
 </script>
 

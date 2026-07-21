@@ -1,5 +1,5 @@
 Структура папок тома PsDisk
-Серийный номер тома: 000000E5 1425:1402
+Серийный номер тома: 0000009A 1425:1402
 E:.
 ¦   .env
 ¦   .gitignore
@@ -162,8 +162,10 @@ E:.
 ¦           auth.js
 ¦           bookings.js
 ¦           bookings_list.js
+¦           home.js
 ¦           landlord.js
 ¦           login.js
+¦           profile.js
 ¦           properties.js
 ¦           property_create.js
 ¦           register.js
@@ -190,10 +192,12 @@ E:.
 ¦   ¦       
 ¦   L---users
 ¦           login.html
+¦           profile.html
 ¦           register.html
 ¦           
 +---users
 ¦   ¦   admin.py
+¦   ¦   api_urls.py
 ¦   ¦   apps.py
 ¦   ¦   authentication.py
 ¦   ¦   models.py
@@ -216,6 +220,7 @@ E:.
 ¦   ¦           
 ¦   L---__pycache__
 ¦           admin.cpython-310.pyc
+¦           api_urls.cpython-310.pyc
 ¦           apps.cpython-310.pyc
 ¦           authentication.cpython-310.pyc
 ¦           models.cpython-310.pyc
