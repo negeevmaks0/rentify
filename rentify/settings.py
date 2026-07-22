@@ -108,7 +108,15 @@ WSGI_APPLICATION = 'rentify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': env('DB_ENGINE'),
-        'NAME': BASE_DIR / env('DB_NAME'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
