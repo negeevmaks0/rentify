@@ -8,156 +8,346 @@ Edit Property
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="edit-property-page">
 
-    <div class="col-md-8">
 
-        <div class="card p-4">
+    <div class="edit-property-header">
 
-            <h2 class="mb-4">
-                Edit Property
-            </h2>
+        <div>
+
+            <span class="edit-property-badge">
+                Property management
+            </span>
+
+            <h1>
+                Edit <span>property</span>
+            </h1>
+
+            <p>
+                Update your property information and keep your listing accurate.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="edit-property-layout">
+
+
+        <div class="edit-property-card">
+
+
+            <div class="edit-card-header">
+
+                <div>
+
+                    <h2>
+                        Property details
+                    </h2>
+
+                    <p>
+                        Update the information shown to guests.
+                    </p>
+
+                </div>
+
+                <div class="edit-card-icon">
+                    ✎
+                </div>
+
+            </div>
 
 
             <form id="propertyForm">
 
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Title
-                    </label>
-
-                    <input
-                        type="text"
-                        id="title"
-                        class="form-control"
-                        required>
-
-                </div>
+                <div class="edit-form-section">
 
 
-                <div class="mb-3">
+                    <div class="edit-form-group">
 
-                    <label class="form-label">
-                        Description
-                    </label>
+                        <label for="title">
+                            Title
+                        </label>
 
-                    <textarea
-                        id="description"
-                        class="form-control"
-                        rows="5"
-                        required>
-                    </textarea>
+                        <input
+                            type="text"
+                            id="title"
+                            class="form-control"
+                            placeholder="e.g. Cozy apartment in Mainz"
+                            required>
 
-                </div>
-
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Location
-                    </label>
-
-                    <input
-                        type="text"
-                        id="location"
-                        class="form-control"
-                        required>
-
-                </div>
+                    </div>
 
 
-                <div class="mb-3">
+                    <div class="edit-form-group">
 
-                    <label class="form-label">
-                        Price per night
-                    </label>
+                        <label for="description">
+                            Description
+                        </label>
 
-                    <input
-                        type="number"
-                        id="price"
-                        class="form-control"
-                        min="0"
-                        step="0.01"
-                        required>
+                        <textarea
+                            id="description"
+                            class="form-control"
+                            rows="6"
+                            placeholder="Describe your property..."
+                            required>
+                        </textarea>
 
-                </div>
-
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Room count
-                    </label>
-
-                    <input
-                        type="number"
-                        id="rooms"
-                        class="form-control"
-                        min="1"
-                        required>
-
-                </div>
+                    </div>
 
 
-                <div class="mb-3">
+                    <div class="edit-form-group">
 
-                    <label class="form-label">
-                        Property type
-                    </label>
+                        <label for="location">
+                            Location
+                        </label>
 
-                    <select
-                        id="type"
-                        class="form-select"
-                        required>
+                        <input
+                            type="text"
+                            id="location"
+                            class="form-control"
+                            placeholder="e.g. Mainz, Germany"
+                            required>
 
-                        <option value="apartment">
-                            Apartment
-                        </option>
+                    </div>
 
-                        <option value="house">
-                            House
-                        </option>
 
-                        <option value="studio">
-                            Studio
-                        </option>
+                    <div class="edit-form-row">
 
-                    </select>
+
+                        <div class="edit-form-group">
+
+                            <label for="price">
+                                Price per night
+                            </label>
+
+                            <div class="edit-input-with-symbol">
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    class="form-control"
+                                    min="0"
+                                    step="0.01"
+                                    required>
+
+                                <span>
+                                    €
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="edit-form-group">
+
+                            <label for="rooms">
+                                Room count
+                            </label>
+
+                            <input
+                                type="number"
+                                id="rooms"
+                                class="form-control"
+                                min="1"
+                                required>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="edit-form-group">
+
+                        <label for="type">
+                            Property type
+                        </label>
+
+                        <select
+                            id="type"
+                            class="form-select"
+                            required>
+
+                            <option value="apartment">
+                                Apartment
+                            </option>
+
+                            <option value="house">
+                                House
+                            </option>
+
+                            <option value="studio">
+                                Studio
+                            </option>
+
+                        </select>
+
+                    </div>
+
 
                 </div>
 
 
                 <div
                     id="error"
-                    class="text-danger mb-3">
+                    class="edit-message edit-message-error">
                 </div>
 
 
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-
-                    Save changes
-
-                </button>
+                <div
+                    id="success"
+                    class="edit-message edit-message-success">
+                </div>
 
 
-                <a
-                    href="/properties/cabinet/"
-                    class="btn btn-secondary">
+                <div class="edit-form-footer">
 
-                    Cancel
 
-                </a>
+                    <a
+                        href="/properties/cabinet/"
+                        class="btn edit-cancel-button">
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        id="saveButton"
+                        class="btn btn-primary edit-save-button">
+
+                        <span id="saveButtonText">
+                            Save changes
+                        </span>
+
+                    </button>
+
+
+                </div>
 
 
             </form>
 
+
         </div>
 
+
+        <div class="property-preview-card">
+
+
+            <div class="preview-header">
+
+                <div>
+
+                    <h2>
+                        Live preview
+                    </h2>
+
+                    <p>
+                        How your property appears to guests.
+                    </p>
+
+                </div>
+
+                <span class="preview-status">
+                    Preview
+                </span>
+
+            </div>
+
+
+            <div class="preview-image-wrapper">
+
+
+                <img
+                    id="previewImage"
+                    src="/static/images/no-image.jpg"
+                    alt="Property preview">
+
+
+                <span
+                    id="previewType"
+                    class="preview-property-type">
+
+                    Apartment
+
+                </span>
+
+
+            </div>
+
+
+            <div class="preview-content">
+
+
+                <h3 id="previewTitle">
+                    Property title
+                </h3>
+
+
+                <p
+                    id="previewLocation"
+                    class="preview-location">
+
+                    📍 Property location
+
+                </p>
+
+
+                <p
+                    id="previewDescription"
+                    class="preview-description">
+
+                    Property description will appear here.
+
+                </p>
+
+
+                <div class="preview-footer">
+
+
+                    <div>
+
+                        <strong id="previewPrice">
+                            0.00 €
+                        </strong>
+
+                        <span>
+                            / night
+                        </span>
+
+                    </div>
+
+
+                    <div class="preview-rooms">
+
+                        <span>
+                            Rooms
+                        </span>
+
+                        <strong id="previewRooms">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
     </div>
+
 
 </div>
 
@@ -175,67 +365,200 @@ const propertyId =
     .pop();
 
 
-async function loadProperty(){
-
-    const response = await fetch(
-
-        `/api/properties/${propertyId}/`,
-
-        {
-            credentials: "include"
-        }
-
-    );
+const titleInput =
+    document.getElementById("title");
 
 
-    if(!response.ok){
+const descriptionInput =
+    document.getElementById("description");
 
-        window.location =
-            "/properties/cabinet/";
 
-        return;
+const locationInput =
+    document.getElementById("location");
+
+
+const priceInput =
+    document.getElementById("price");
+
+
+const roomsInput =
+    document.getElementById("rooms");
+
+
+const typeInput =
+    document.getElementById("type");
+
+
+const previewTitle =
+    document.getElementById("previewTitle");
+
+
+const previewDescription =
+    document.getElementById("previewDescription");
+
+
+const previewLocation =
+    document.getElementById("previewLocation");
+
+
+const previewPrice =
+    document.getElementById("previewPrice");
+
+
+const previewRooms =
+    document.getElementById("previewRooms");
+
+
+const previewType =
+    document.getElementById("previewType");
+
+
+const previewImage =
+    document.getElementById("previewImage");
+
+
+function updatePreview(){
+
+    previewTitle.innerText =
+        titleInput.value
+        ||
+        "Property title";
+
+
+    previewDescription.innerText =
+        descriptionInput.value
+        ||
+        "Property description will appear here.";
+
+
+    previewLocation.innerText =
+        `📍 ${
+            locationInput.value
+            ||
+            "Property location"
+        }`;
+
+
+    previewPrice.innerText =
+        `${
+            priceInput.value
+            ||
+            "0.00"
+        } €`;
+
+
+    previewRooms.innerText =
+        roomsInput.value
+        ||
+        "0";
+
+
+    previewType.innerText =
+        typeInput.options[
+            typeInput.selectedIndex
+        ].text;
+
+}
+
+
+[
+    titleInput,
+    descriptionInput,
+    locationInput,
+    priceInput,
+    roomsInput,
+    typeInput
+]
+.forEach(
+    input => {
+
+        input.addEventListener(
+            "input",
+            updatePreview
+        );
+
+        input.addEventListener(
+            "change",
+            updatePreview
+        );
 
     }
+);
 
 
-    const property =
-        await response.json();
+async function loadProperty(){
+
+    try{
+
+        const response =
+            await fetch(
+
+                `/api/properties/${propertyId}/`,
+
+                {
+                    credentials: "include"
+                }
+
+            );
 
 
-    document
-        .getElementById("title")
-        .value =
-        property.title;
+        if(!response.ok){
+
+            window.location =
+                "/properties/cabinet/";
+
+            return;
+
+        }
 
 
-    document
-        .getElementById("description")
-        .value =
-        property.description;
+        const property =
+            await response.json();
 
 
-    document
-        .getElementById("location")
-        .value =
-        property.location;
+        titleInput.value =
+            property.title;
 
 
-    document
-        .getElementById("price")
-        .value =
-        property.price_per_night;
+        descriptionInput.value =
+            property.description;
 
 
-    document
-        .getElementById("rooms")
-        .value =
-        property.room_count;
+        locationInput.value =
+            property.location;
 
 
-    document
-        .getElementById("type")
-        .value =
-        property.property_type;
+        priceInput.value =
+            property.price_per_night;
+
+
+        roomsInput.value =
+            property.room_count;
+
+
+        typeInput.value =
+            property.property_type;
+
+
+        if(property.main_image){
+
+            previewImage.src =
+                property.main_image;
+
+        }
+
+
+        updatePreview();
+
+
+    }catch(error){
+
+        document
+            .getElementById("error")
+            .innerText =
+            "Unable to load property.";
+
+    }
 
 }
 
@@ -249,81 +572,153 @@ document
             e.preventDefault();
 
 
-            const response =
-                await fetch(
-
-                    `/api/properties/${propertyId}/`,
-
-                    {
-
-                        method: "PATCH",
-
-                        credentials: "include",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body: JSON.stringify({
-
-                            title:
-                                document
-                                .getElementById("title")
-                                .value,
-
-                            description:
-                                document
-                                .getElementById("description")
-                                .value,
-
-                            location:
-                                document
-                                .getElementById("location")
-                                .value,
-
-                            price_per_night:
-                                document
-                                .getElementById("price")
-                                .value,
-
-                            room_count:
-                                document
-                                .getElementById("rooms")
-                                .value,
-
-                            property_type:
-                                document
-                                .getElementById("type")
-                                .value
-
-                        })
-
-                    }
-
+            const saveButton =
+                document.getElementById(
+                    "saveButton"
                 );
 
 
-            if(response.ok){
+            const saveButtonText =
+                document.getElementById(
+                    "saveButtonText"
+                );
 
-                window.location =
-                    "/properties/cabinet/";
 
-                return;
+            const error =
+                document.getElementById(
+                    "error"
+                );
+
+
+            const success =
+                document.getElementById(
+                    "success"
+                );
+
+
+            error.innerText =
+                "";
+
+
+            success.innerText =
+                "";
+
+
+            saveButton.disabled =
+                true;
+
+
+            saveButtonText.innerText =
+                "Saving...";
+
+
+            try{
+
+                const response =
+                    await fetch(
+
+                        `/api/properties/${propertyId}/`,
+
+                        {
+
+                            method: "PATCH",
+
+                            credentials: "include",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                title:
+                                    titleInput.value,
+
+                                description:
+                                    descriptionInput.value,
+
+                                location:
+                                    locationInput.value,
+
+                                price_per_night:
+                                    priceInput.value,
+
+                                room_count:
+                                    roomsInput.value,
+
+                                property_type:
+                                    typeInput.value
+
+                            })
+
+                        }
+
+                    );
+
+
+                if(!response.ok){
+
+                    const data =
+                        await response.json();
+
+
+                    error.innerText =
+                        Object
+                        .values(data)
+                        .flat()
+                        .join(" ");
+
+
+                    return;
+
+                }
+
+
+                success.innerText =
+                    "Changes saved successfully.";
+
+
+                saveButtonText.innerText =
+                    "Saved";
+
+
+                setTimeout(
+                    () => {
+
+                        window.location =
+                            "/properties/cabinet/";
+
+                    },
+                    800
+                );
+
+
+            }catch(error){
+
+                document
+                    .getElementById("error")
+                    .innerText =
+                    "Something went wrong. Please try again.";
+
+            }finally{
+
+                saveButton.disabled =
+                    false;
+
+                setTimeout(
+                    () => {
+
+                        saveButtonText.innerText =
+                            "Save changes";
+
+                    },
+                    1000
+                );
 
             }
-
-
-            const data =
-                await response.json();
-
-
-            document
-                .getElementById("error")
-                .innerText =
-                JSON.stringify(data);
 
         }
 
