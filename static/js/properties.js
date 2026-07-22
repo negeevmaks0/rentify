@@ -266,7 +266,8 @@ function openPropertyModal(property){
 
                     <img
                         src="${image.image}"
-                        class="property-modal-image">
+                        class="property-modal-image"
+                        onclick="openImageViewer('${image.image}')">
 
                 `
                 ).join("")}
@@ -512,5 +513,77 @@ window.addEventListener(
     }
 );
 
+function openImageViewer(imageUrl){
+
+    const viewer =
+        document.getElementById(
+            "imageViewer"
+        );
+
+
+    const image =
+        document.getElementById(
+            "imageViewerImage"
+        );
+
+
+    image.src =
+        imageUrl;
+
+
+    viewer.style.display =
+        "flex";
+
+}
+
+
+function closeImageViewer(){
+
+    document
+        .getElementById(
+            "imageViewer"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+document
+    .getElementById(
+        "imageViewerClose"
+    )
+    .addEventListener(
+        "click",
+        closeImageViewer
+    );
+
+
+document
+    .getElementById(
+        "imageViewer"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+            if(
+                event.target === this
+            ){
+                closeImageViewer();
+            }
+        }
+    );
+
+document
+    .addEventListener(
+        "keydown",
+        function(event){
+            if(
+                event.key === "Escape"
+            ){
+                closeImageViewer();
+            }
+        }
+    );
 
 loadProperties();
